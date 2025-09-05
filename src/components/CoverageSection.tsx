@@ -29,7 +29,7 @@ export default function CoverageSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="font-anton text-4xl text-dark-gray mb-6">
-            Households, Groups, and Coverage
+            Households, Groups, and <span className="text-mtaka-green">Coverage</span>
           </h2>
           <p className="font-poppins text-xl text-gray-600">
             Our impact across Kisumu City
@@ -38,19 +38,22 @@ export default function CoverageSection() {
 
         {/* Statistics */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {stats.map((stat, index) => (
-            <div key={index} className="text-center bg-white p-8 rounded-lg shadow-sm">
-              <div className="text-6xl font-bold text-mtaka-green mb-2" style={{ fontFamily: 'monospace' }}>
-                {stat.number}
+          {stats.map((stat, index) => {
+            const colors = ["text-mtaka-green", "text-practical-orange", "text-mtaka-green"];
+            return (
+              <div key={index} className="text-center bg-white p-8 rounded-lg shadow-sm">
+                <div className={`text-6xl font-anton ${colors[index]} mb-2`}>
+                  {stat.number}
+                </div>
+                <h3 className="font-anton text-2xl text-dark-gray mb-2">
+                  {stat.label}
+                </h3>
+                <p className="font-poppins text-gray-600">
+                  {stat.description}
+                </p>
               </div>
-              <h3 className="font-anton text-2xl text-dark-gray mb-2">
-                {stat.label}
-              </h3>
-              <p className="font-poppins text-gray-600">
-                {stat.description}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Map and Areas */}

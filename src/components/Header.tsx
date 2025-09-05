@@ -1,13 +1,33 @@
+"use client";
+
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function Header() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header className="bg-white shadow-sm border-b">
+    <header 
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-white/80 backdrop-blur-sm shadow-md' 
+          : 'bg-transparent'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div className="font-anton text-2xl">
-            <span className="text-mtaka-green">CRICHOW</span>
-            <span className="text-practical-orange"> Project</span>
+            <span className="text-mtaka-green">CRI</span>
+            <span className="text-practical-orange">CHOW</span>
           </div>
           
           <nav className="hidden md:flex space-x-8">
@@ -29,7 +49,7 @@ export default function Header() {
           </nav>
 
           <Link href="/login" className="btn-primary">
-            Access Dashboard
+            DASHBOARD
           </Link>
         </div>
       </div>

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function HeroSection() {
   return (
-    <section id="home" className="bg-gradient-to-br from-green-50 to-orange-50 py-20">
+    <section id="home" className="bg-gradient-to-br from-green-50 to-orange-50 py-20 pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="font-anton text-5xl md:text-7xl mb-6">
           <span className="text-mtaka-green">M-taka</span> & <span className="text-practical-orange">Practical Action</span>

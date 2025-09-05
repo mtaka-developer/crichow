@@ -58,14 +58,14 @@ html {
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
-  box-shadow: inset 0 0 0 10px #E5F8E5;
   transition: all 0.3s ease;
-  font-weight: 500;
+  font-family: 'Anton SC', sans-serif;
+  font-weight: 400;
 }
 
 .btn-primary:hover {
-  background-color: #1da617;
-  box-shadow: inset 0 0 0 15px #E5F8E5;
+  background-color: var(--mtaka-green);
+  box-shadow: inset 0 0 0 10px #1da617;
 }
 
 .btn-secondary {
@@ -75,12 +75,12 @@ html {
   padding: 10px 22px;
   border-radius: 8px;
   transition: all 0.3s ease;
-  font-weight: 500;
+  font-family: 'Anton SC', sans-serif;
+  font-weight: 400;
 }
 
 .btn-secondary:hover {
-  background-color: var(--practical-orange);
-  color: white;
+  box-shadow: inset 0 0 0 10px #d1d5db;
 }
 
 .nav-link {
