@@ -1,4 +1,3 @@
-import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -14,13 +13,10 @@ export default function HeroSection() {
           Transforming waste management in Kisumu through digital innovation, 
           community empowerment, and sustainable environmental solutions.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex justify-center">
           <a href="#coverage" className="btn-primary text-center">
             Explore Our Impact
           </a>
-          <Link href="/login" className="btn-secondary text-center">
-            Access Dashboard
-          </Link>
         </div>
       </div>
     </section>

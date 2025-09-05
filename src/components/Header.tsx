@@ -25,15 +25,12 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          <div className="font-anton text-2xl">
+          <Link href="/" className="font-anton text-2xl">
             <span className="text-mtaka-green">CRI</span>
             <span className="text-practical-orange">CHOW</span>
-          </div>
+          </Link>
           
           <nav className="hidden md:flex space-x-8">
-            <a href="#home" className="nav-link text-dark-gray hover:text-mtaka-green">
-              Home
-            </a>
             <a href="#about" className="nav-link text-dark-gray hover:text-mtaka-green">
               About
             </a>

@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "npm run clear-cache && next dev --turbopack",
+    "build": "npm run clear-cache && next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "clear-cache": "rm -rf .next && echo 'Cache cleared!'",
+    "dev-fresh": "npm run clear-cache && rm -rf node_modules/.cache && next dev --turbopack"
   },
   "dependencies": {
     "react": "19.1.0",

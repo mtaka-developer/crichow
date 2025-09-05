@@ -2,11 +2,14 @@ export default function AboutSection() {
   return (
     <section id="about" className="section-light py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="font-anton text-4xl text-dark-gray mb-6">
+            About the <span className="text-mtaka-green">Partnership</span>
+          </h2>
+        </div>
+        
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="font-anton text-4xl text-dark-gray mb-6">
-              About the <span className="text-mtaka-green">Partnership</span>
-            </h2>
             <div className="font-poppins text-lg text-gray-600 space-y-4">
               <p>
                 M-taka has partnered with Practical Action to transform waste management in Kisumu 

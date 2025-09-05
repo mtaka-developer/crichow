@@ -69,13 +69,10 @@ export default function PartnersSection() {
           <p className="font-poppins text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Access real-time dashboards and insights from the CRICHOW project
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex justify-center">
             <Link href="/login" className="btn-primary text-center">
-              Access Dashboard
+              Dashboard
             </Link>
-            <a href="#home" className="btn-secondary text-center">
-              Learn More
-            </a>
           </div>
         </div>
       </div>

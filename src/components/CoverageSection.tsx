@@ -69,7 +69,7 @@ export default function CoverageSection() {
               {areas.map((area, index) => (
                 <div 
                   key={index} 
-                  className="bg-white p-3 rounded border-l-4 border-mtaka-green font-poppins text-sm"
+                  className="bg-white p-3 rounded border-l-4 border-mtaka-green font-poppins text-sm text-black"
                 >
                   {area}
                 </div>

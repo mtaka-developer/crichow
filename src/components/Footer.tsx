@@ -1,4 +1,3 @@
-import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -8,32 +7,19 @@ export default function Footer() {
           {/* CRICHOW Branding */}
           <div className="md:col-span-2">
             <div className="font-anton text-3xl mb-4">
-              <span className="text-mtaka-green">CRICHOW</span>
-              <span className="text-practical-orange"> Project</span>
+              <span className="text-mtaka-green">CRI</span>
+              <span className="text-practical-orange">CHOW</span>
             </div>
             <p className="font-poppins text-gray-300 mb-6 max-w-md">
               Transforming waste management in Kisumu through the partnership between 
               M-taka and Practical Action. Building cleaner communities through digital innovation.
             </p>
-            <div className="flex space-x-4">
-              <Link href="/login" className="btn-primary">
-                Access Dashboard
-              </Link>
-              <a href="#home" className="btn-secondary">
-                Learn More
-              </a>
-            </div>
           </div>
 
           {/* Quick Links */}
           <div>
             <h3 className="font-anton text-xl text-white mb-4">Quick Links</h3>
             <ul className="font-poppins space-y-3">
-              <li>
-                <a href="#home" className="text-gray-300 hover:text-mtaka-green transition-colors">
-                  Home
-                </a>
-              </li>
               <li>
                 <a href="#about" className="text-gray-300 hover:text-mtaka-green transition-colors">
                   About Partnership
@@ -106,7 +92,7 @@ export default function Footer() {
             
             <div className="text-right">
               <p className="font-poppins text-gray-300">
-                © 2025 <span className="text-mtaka-green">CRICHOW</span> Project
+                © 2025 <span className="text-mtaka-green">CRI</span><span className="text-practical-orange">CHOW</span>
               </p>
               <p className="font-poppins text-sm text-gray-400 mt-1">
                 Clean Rivers, Clean Homes Initiative
