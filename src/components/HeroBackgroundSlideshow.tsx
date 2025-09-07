@@ -2,125 +2,99 @@
 
 import { useState, useEffect } from "react";
 
-const heroImages = [
-  {
-    src: "/GSI-6221.jpg",
-    alt: "M-taka presentation showcasing waste management strategies"
-  },
-  {
-    src: "/GSI-6410.jpg", 
-    alt: "CRICHOW project partnership presentation"
-  },
-  {
-    src: "/GSI-6417.jpg",
-    alt: "CRICHOW project team collaboration"
-  },
-  {
-    src: "/GSI-6443.jpg",
-    alt: "Community engagement session"
-  },
-  {
-    src: "/GSI-6519.jpg",
-    alt: "Project implementation discussion"
-  },
-  {
-    src: "/HOK-1138.jpg",
-    alt: "M-taka app demonstration in the field"
-  },
-  {
-    src: "/HOK-1139 (4).jpg",
-    alt: "Field data collection activities"
-  },
-  {
-    src: "/HOK-1143.jpg",
-    alt: "Community waste management training"
-  },
-  {
-    src: "/MTK-0877.jpg",
-    alt: "CRICHOW project presentation to stakeholders"
-  },
-  {
-    src: "/MTK-0972.jpg",
-    alt: "M-taka team working on waste solutions"
-  },
-  {
-    src: "/MTK-1004.jpg",
-    alt: "Digital platform development and testing"
-  }
+const images = [
+  "/GSI-6221.webp",
+  "/GSI-6410.webp", 
+  "/GSI-6417.webp",
+  "/GSI-6443.webp",
+  "/GSI-6519.webp",
+  "/HOK-1138.webp",
+  "/HOK-1139 (4).webp",
+  "/HOK-1143.webp",
+  "/MTK-0877.webp",
+  "/MTK-0972.webp",
+  "/MTK-1004.webp"
 ];
 
 export default function HeroBackgroundSlideshow() {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
+  // Auto-advance every 5 seconds
   useEffect(() => {
-    if (isHovered) return;
+    if (isPaused) return;
+    
+    const timer = setInterval(() => {
+      setActiveSlide(current => (current + 1) % images.length);
+    }, 5000);
+    
+    return () => clearInterval(timer);
+  }, [isPaused]);
 
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => 
-        prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 5000); // Change image every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [isHovered]);
+  const goToSlide = (index: number) => setActiveSlide(index);
+  const nextSlide = () => setActiveSlide(current => (current + 1) % images.length);
+  const prevSlide = () => setActiveSlide(current => (current - 1 + images.length) % images.length);
 
   return (
     <div 
-      className="absolute inset-0 overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="relative w-full h-full overflow-hidden"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background image - z-0 (default) */}
-      <img
-        src={heroImages[currentImageIndex].src}
-        alt={heroImages[currentImageIndex].alt}
-        className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-1000 ease-in-out z-0"
-      />
-
-      {/* Dark overlay for text readability - z-10 */}
-      <div className="absolute inset-0 bg-black opacity-40 z-10" />
-
-      {/* Slide indicators */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-30">
-        {heroImages.map((_, index) => (
-          <button
+      {/* Images */}
+      <div className="relative w-full h-full">
+        {images.map((image, index) => (
+          <div
             key={index}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentImageIndex 
-                ? 'bg-white scale-110' 
-                : 'bg-white/50 hover:bg-white/75'
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === activeSlide ? 'opacity-100' : 'opacity-0'
             }`}
-            onClick={() => setCurrentImageIndex(index)}
-            aria-label={`Go to slide ${index + 1}`}
-          />
+          >
+            <img
+              src={image}
+              alt={`Slide ${index + 1}`}
+              className="w-full h-full object-cover"
+            />
+          </div>
         ))}
       </div>
 
-      {/* Navigation arrows */}
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/40" />
+
+      {/* Navigation */}
       <button
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-black/20 backdrop-blur-sm text-white hover:bg-black/40 transition-all duration-300 z-30"
-        onClick={() => setCurrentImageIndex(
-          currentImageIndex === 0 ? heroImages.length - 1 : currentImageIndex - 1
-        )}
-        aria-label="Previous image"
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-black/20 text-white hover:bg-black/40 transition-all duration-200"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
       </button>
 
       <button
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-black/20 backdrop-blur-sm text-white hover:bg-black/40 transition-all duration-300 z-30"
-        onClick={() => setCurrentImageIndex(
-          currentImageIndex === heroImages.length - 1 ? 0 : currentImageIndex + 1
-        )}
-        aria-label="Next image"
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-black/20 text-white hover:bg-black/40 transition-all duration-200"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </button>
+
+      {/* Dots */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex space-x-2">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-200 ${
+              index === activeSlide 
+                ? 'bg-white scale-125' 
+                : 'bg-white/50 hover:bg-white/75'
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 }
