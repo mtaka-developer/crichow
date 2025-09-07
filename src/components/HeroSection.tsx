@@ -7,22 +7,22 @@ export default function HeroSection() {
       {/* Dynamic Background Slideshow */}
       <HeroSlideshowWrapper />
       
-      {/* Hero Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* Hero Content - z-20 to appear above overlay */}
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div>
-          <h1 className="font-anton text-5xl md:text-7xl mb-6 text-white drop-shadow-lg">
-            <span className="text-mtaka-green drop-shadow-lg">M-taka</span> & <span className="text-practical-orange drop-shadow-lg">Practical Action</span>
+          <h1 className="font-anton text-5xl md:text-7xl mb-6 text-white" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)'}}>
+            <span className="text-mtaka-green" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)'}}>M-taka</span> & <span className="text-practical-orange" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)'}}>Practical Action</span>
           </h1>
         </div>
         
         <div>
-          <h2 className="font-anton text-2xl md:text-4xl text-white mb-8 drop-shadow-lg">
+          <h2 className="font-anton text-2xl md:text-4xl text-white mb-8" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 6px rgba(0,0,0,0.5)'}}>
             Clean Rivers, Clean Homes (CRICHOW) Project
           </h2>
         </div>
         
         <div>
-          <p className="font-poppins text-xl text-white/90 max-w-3xl mx-auto mb-10 drop-shadow-md">
+          <p className="font-poppins text-xl text-white/90 max-w-3xl mx-auto mb-10" style={{textShadow: '1px 1px 3px rgba(0,0,0,0.8), 0 0 6px rgba(0,0,0,0.4)'}}>
             Transforming waste management in Kisumu through digital innovation, 
             community empowerment, and sustainable environmental solutions.
           </p>

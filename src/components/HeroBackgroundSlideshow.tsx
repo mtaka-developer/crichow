@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
 const heroImages = [
@@ -14,24 +12,46 @@ const heroImages = [
     alt: "CRICHOW project partnership presentation"
   },
   {
-    src: "/MTK-0877.jpg",
-    alt: "CRICHOW project presentation to stakeholders"
+    src: "/GSI-6417.jpg",
+    alt: "CRICHOW project team collaboration"
+  },
+  {
+    src: "/GSI-6443.jpg",
+    alt: "Community engagement session"
+  },
+  {
+    src: "/GSI-6519.jpg",
+    alt: "Project implementation discussion"
   },
   {
     src: "/HOK-1138.jpg",
     alt: "M-taka app demonstration in the field"
   },
   {
-    src: "/GSI-6519.jpg",
-    alt: "Project implementation discussion"
+    src: "/HOK-1139 (4).jpg",
+    alt: "Field data collection activities"
+  },
+  {
+    src: "/HOK-1143.jpg",
+    alt: "Community waste management training"
+  },
+  {
+    src: "/MTK-0877.jpg",
+    alt: "CRICHOW project presentation to stakeholders"
+  },
+  {
+    src: "/MTK-0972.jpg",
+    alt: "M-taka team working on waste solutions"
+  },
+  {
+    src: "/MTK-1004.jpg",
+    alt: "Digital platform development and testing"
   }
 ];
 
 export default function HeroBackgroundSlideshow() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     if (isHovered) return;
@@ -45,64 +65,24 @@ export default function HeroBackgroundSlideshow() {
     return () => clearInterval(interval);
   }, [isHovered]);
 
-  // Reset image loading state when image changes
-  useEffect(() => {
-    setImageLoaded(false);
-    setImageError(false);
-  }, [currentImageIndex]);
-
-  // Preload next image for smooth transitions
-  useEffect(() => {
-    const nextIndex = currentImageIndex === heroImages.length - 1 ? 0 : currentImageIndex + 1;
-    const img = new window.Image();
-    img.src = heroImages[nextIndex].src;
-  }, [currentImageIndex]);
-
   return (
     <div 
       className="absolute inset-0 overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentImageIndex}
-          className="absolute inset-0"
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ 
-            duration: 1.2,
-            ease: "easeInOut"
-          }}
-        >
-          <Image
-            src={heroImages[currentImageIndex].src}
-            alt={heroImages[currentImageIndex].alt}
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority={currentImageIndex === 0}
-            quality={85}
-            onLoadingComplete={() => setImageLoaded(true)}
-            onError={() => setImageError(true)}
-          />
-          
-          {/* Fallback if image doesn't load */}
-          {(imageError || !imageLoaded) && (
-            <div className="absolute inset-0 bg-gradient-to-br from-green-100 via-orange-100 to-green-200" />
-          )}
-        </motion.div>
-      </AnimatePresence>
+      {/* Background image - z-0 (default) */}
+      <img
+        src={heroImages[currentImageIndex].src}
+        alt={heroImages[currentImageIndex].alt}
+        className="absolute inset-0 w-full h-full object-cover object-center transition-all duration-1000 ease-in-out z-0"
+      />
 
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-black bg-opacity-40" />
-      
-      {/* Subtle gradient overlay for better text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
+      {/* Dark overlay for text readability - z-10 */}
+      <div className="absolute inset-0 bg-black opacity-40 z-10" />
 
       {/* Slide indicators */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-10">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-30">
         {heroImages.map((_, index) => (
           <button
             key={index}
@@ -119,7 +99,7 @@ export default function HeroBackgroundSlideshow() {
 
       {/* Navigation arrows */}
       <button
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-black/20 backdrop-blur-sm text-white hover:bg-black/40 transition-all duration-300 z-10"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-black/20 backdrop-blur-sm text-white hover:bg-black/40 transition-all duration-300 z-30"
         onClick={() => setCurrentImageIndex(
           currentImageIndex === 0 ? heroImages.length - 1 : currentImageIndex - 1
         )}
@@ -131,7 +111,7 @@ export default function HeroBackgroundSlideshow() {
       </button>
 
       <button
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-black/20 backdrop-blur-sm text-white hover:bg-black/40 transition-all duration-300 z-10"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-black/20 backdrop-blur-sm text-white hover:bg-black/40 transition-all duration-300 z-30"
         onClick={() => setCurrentImageIndex(
           currentImageIndex === heroImages.length - 1 ? 0 : currentImageIndex + 1
         )}
