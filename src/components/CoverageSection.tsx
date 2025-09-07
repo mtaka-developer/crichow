@@ -1,17 +1,20 @@
+import CountingAnimationWrapper from "./CountingAnimationWrapper";
+import MapWrapper from "./MapWrapper";
+
 export default function CoverageSection() {
   const stats = [
     {
-      number: "138",
+      number: 138,
       label: "Households",
       description: "Active households participating in the program"
     },
     {
-      number: "13",
+      number: 13,
       label: "Groups",
       description: "Community waste handler groups"
     },
     {
-      number: "13",
+      number: 13,
       label: "Wards",
       description: "Areas covered, expanding to 14 in Phase 2"
     }
@@ -43,7 +46,12 @@ export default function CoverageSection() {
             return (
               <div key={index} className="text-center bg-white p-8 rounded-lg shadow-sm">
                 <div className={`text-6xl font-anton ${colors[index]} mb-2`}>
-                  {stat.number}
+                  <CountingAnimationWrapper
+                    from={0}
+                    to={stat.number}
+                    duration={2.5}
+                    className={colors[index]}
+                  />
                 </div>
                 <h3 className="font-anton text-2xl text-dark-gray mb-2">
                   {stat.label}
@@ -79,20 +87,9 @@ export default function CoverageSection() {
 
           <div className="bg-white p-8 rounded-lg shadow-sm">
             <h3 className="font-anton text-2xl text-dark-gray mb-6 text-center">
-              Kisumu City Map
+              Interactive Kisumu City Map
             </h3>
-            {/* Placeholder for map */}
-            <div className="bg-gradient-to-br from-green-100 to-orange-100 h-80 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
-              <div className="text-center">
-                <div className="text-4xl mb-4">🗺️</div>
-                <p className="font-poppins text-gray-600">
-                  Interactive Kisumu City Map
-                </p>
-                <p className="font-poppins text-sm text-gray-500 mt-2">
-                  Showing coverage areas and expansion plans
-                </p>
-              </div>
-            </div>
+            <MapWrapper />
           </div>
         </div>
       </div>
