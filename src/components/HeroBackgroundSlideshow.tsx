@@ -30,6 +30,8 @@ const heroImages = [
 export default function HeroBackgroundSlideshow() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     if (isHovered) return;
@@ -42,6 +44,12 @@ export default function HeroBackgroundSlideshow() {
 
     return () => clearInterval(interval);
   }, [isHovered]);
+
+  // Reset image loading state when image changes
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+  }, [currentImageIndex]);
 
   // Preload next image for smooth transitions
   useEffect(() => {
@@ -76,7 +84,14 @@ export default function HeroBackgroundSlideshow() {
             sizes="100vw"
             priority={currentImageIndex === 0}
             quality={85}
+            onLoadingComplete={() => setImageLoaded(true)}
+            onError={() => setImageError(true)}
           />
+          
+          {/* Fallback if image doesn't load */}
+          {(imageError || !imageLoaded) && (
+            <div className="absolute inset-0 bg-gradient-to-br from-green-100 via-orange-100 to-green-200" />
+          )}
         </motion.div>
       </AnimatePresence>
 

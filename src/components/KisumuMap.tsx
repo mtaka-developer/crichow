@@ -55,11 +55,20 @@ export default function KisumuMap() {
   }, []);
 
   return (
-    <div className="h-80 rounded-lg overflow-hidden shadow-lg border border-gray-200">
+    <div className="h-80 rounded-lg overflow-hidden shadow-lg border border-gray-200 relative z-10">
       <style jsx>{`
         .custom-marker {
           background: transparent !important;
           border: none !important;
+        }
+        .leaflet-container {
+          z-index: 1 !important;
+        }
+        .leaflet-control-container {
+          z-index: 10 !important;
+        }
+        .leaflet-popup {
+          z-index: 20 !important;
         }
       `}</style>
       
