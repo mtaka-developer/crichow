@@ -2,26 +2,35 @@
 
 import { useState, useEffect } from 'react';
 import DashboardPageWrapper from "@/components/dashboard/DashboardPageWrapper";
-import FilterComponents from "@/components/dashboard/FilterComponents";
-import DryWetWasteByGroupChart from "@/components/dashboard/DryWetWasteByGroupChart";
-import GroupTotalWeightDonutChart from "@/components/dashboard/GroupTotalWeightDonutChart";
-import WasteCategoriesByGroupChart from "@/components/dashboard/WasteCategoriesByGroupChart";
-import { RawDataRecord, CleanedDataRecord, FilterState, GroupAnalysisData } from '@/types/data';
-import { cleanData, filterData, calculateGroupAnalysisData, getUniqueValues } from '@/lib/dataUtils';
+import DryWasteFilterComponents from "@/components/dashboard/DryWasteFilterComponents";
+import RecyclableMaterialKPIGrid from "@/components/dashboard/RecyclableMaterialKPIGrid";
+import DryWasteAnalysisChart from "@/components/dashboard/DryWasteAnalysisChart";
+import TotalWeightChart from "@/components/dashboard/TotalWeightChart";
+import { RawDataRecord, CleanedDataRecord, DryWasteFilterState, RecyclableMaterialKPIData } from '@/types/data';
+import { cleanData, filterDryWasteData, calculateRecyclableMaterialKPIs, getUniqueValues } from '@/lib/dataUtils';
 
-export default function CumulativeGroupDataPage() {
+export default function CopyOfDryWasteAnalysisPage() {
   const [cleanedData, setCleanedData] = useState<CleanedDataRecord[]>([]);
   const [filteredData, setFilteredData] = useState<CleanedDataRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  const [filters, setFilters] = useState<FilterState>({
+  const [filters, setFilters] = useState<DryWasteFilterState>({
     dateRange: { start: null, end: null },
     selectedGroup: 'all',
-    selectedHousehold: 'all'
+    selectedHousehold: 'all',
+    selectedMaterialTypes: ['HDPE', 'PET', 'PP', 'Glass', 'Paper', 'Metal']
   });
 
-  const [groupAnalysisData, setGroupAnalysisData] = useState<GroupAnalysisData[]>([]);
+  const [kpiData, setKpiData] = useState<RecyclableMaterialKPIData>({
+    hdpe: 0,
+    pet: 0,
+    pp: 0,
+    glass: 0,
+    paper: 0,
+    metal: 0
+  });
+
   const [uniqueValues, setUniqueValues] = useState<{ groups: string[]; households: string[] }>({ groups: [], households: [] });
 
   // Load and clean data on component mount
@@ -47,8 +56,8 @@ export default function CumulativeGroupDataPage() {
         const unique = getUniqueValues(cleaned);
         setUniqueValues(unique);
         
-        // Calculate initial group analysis data
-        setGroupAnalysisData(calculateGroupAnalysisData(cleaned));
+        // Calculate initial KPIs
+        setKpiData(calculateRecyclableMaterialKPIs(cleaned));
         
       } catch (err) {
         console.error('Error loading data:', err);
@@ -64,21 +73,21 @@ export default function CumulativeGroupDataPage() {
   // Update filtered data when filters change
   useEffect(() => {
     if (cleanedData.length > 0) {
-      const filtered = filterData(cleanedData, filters);
+      const filtered = filterDryWasteData(cleanedData, filters);
       setFilteredData(filtered);
       
-      // Recalculate group analysis data based on filtered data
-      setGroupAnalysisData(calculateGroupAnalysisData(filtered));
+      // Recalculate KPIs based on filtered data
+      setKpiData(calculateRecyclableMaterialKPIs(filtered));
     }
   }, [filters, cleanedData]);
 
   if (loading) {
     return (
-      <DashboardPageWrapper title="Cumulative Group Data">
+      <DashboardPageWrapper title="Copy of Dry Waste Analysis">
         <div className="flex items-center justify-center min-h-64">
           <div className="flex items-center space-x-3">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-mtaka-green"></div>
-            <span className="text-gray-600 font-poppins">Loading cumulative group analysis data...</span>
+            <span className="text-gray-600 font-poppins">Loading dry waste analysis data...</span>
           </div>
         </div>
       </DashboardPageWrapper>
@@ -87,7 +96,7 @@ export default function CumulativeGroupDataPage() {
 
   if (error) {
     return (
-      <DashboardPageWrapper title="Cumulative Group Data">
+      <DashboardPageWrapper title="Copy of Dry Waste Analysis">
         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
           <div className="flex items-center">
             <svg className="w-6 h-6 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,7 +113,7 @@ export default function CumulativeGroupDataPage() {
   }
 
   return (
-    <DashboardPageWrapper title="Cumulative Group Data">
+    <DashboardPageWrapper title="Copy of Dry Waste Analysis">
       {/* Data Overview */}
       <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
         <div className="flex items-center">
@@ -112,36 +121,39 @@ export default function CumulativeGroupDataPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <span className="text-blue-800 font-poppins text-sm">
-            <strong>{filteredData.length.toLocaleString()}</strong> records from 
-            <strong> {groupAnalysisData.length}</strong> groups for comparative analysis
+            <strong>{filteredData.length.toLocaleString()}</strong> records matching current filters for dry waste analysis
           </span>
         </div>
       </div>
 
       {/* Filters */}
-      <FilterComponents 
+      <DryWasteFilterComponents 
         filters={filters}
         onFiltersChange={setFilters}
         groups={uniqueValues.groups}
         households={uniqueValues.households}
       />
 
-      {/* Charts Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        {/* Dry and Wet Waste by Group Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <DryWetWasteByGroupChart data={groupAnalysisData} />
-        </div>
-
-        {/* Group by Total Weight Donut Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <GroupTotalWeightDonutChart data={groupAnalysisData} />
-        </div>
+      {/* Recyclable Material KPI Cards */}
+      <div className="mb-8">
+        <h3 className="text-xl font-semibold text-gray-900 mb-4 font-anton">Recyclable Material Collection</h3>
+        <RecyclableMaterialKPIGrid data={kpiData} />
       </div>
 
-      {/* Waste Categories by Group Chart - Full Width */}
-      <div className="mt-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        <WasteCategoriesByGroupChart data={groupAnalysisData} />
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        {/* Dry Waste Analysis Chart */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <DryWasteAnalysisChart 
+            data={filteredData} 
+            selectedMaterialTypes={filters.selectedMaterialTypes}
+          />
+        </div>
+
+        {/* Total Weight Chart */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <TotalWeightChart data={filteredData} />
+        </div>
       </div>
     </DashboardPageWrapper>
   );

@@ -43,6 +43,16 @@ export interface FilterState {
   selectedHousehold: string;
 }
 
+export interface DryWasteFilterState {
+  dateRange: {
+    start: Date | null;
+    end: Date | null;
+  };
+  selectedGroup: string;
+  selectedHousehold: string;
+  selectedMaterialTypes: string[];
+}
+
 export interface KPIData {
   numberOfGroups: number;
   numberOfHouseholds: number;
@@ -65,4 +75,41 @@ export interface HouseholdCategoryData {
     totalHouseholds: number;
     totalWeeks: number;
   };
+}
+
+export interface RecyclableMaterialKPIData {
+  hdpe: number;
+  pet: number;
+  pp: number;
+  glass: number;
+  paper: number;
+  metal: number;
+}
+
+export interface GroupAnalysisData {
+  groupName: string;
+  totalWetWaste: number;
+  totalDryWaste: number;
+  totalWeight: number;
+  hdpe: number;
+  pet: number;
+  pp: number;
+  glass: number;
+  paper: number;
+  metal: number;
+}
+
+export interface ExtrapolationData {
+  avgWeeklyWetWastePerHousehold: number;
+  avgWeeklyDryWastePerHousehold: number;
+  avgWeeklyTotalWeightPerHousehold: number;
+  avgDailyWetWastePerHousehold: number;
+  avgDailyDryWastePerHousehold: number;
+  avgDailyTotalWeightPerHousehold: number;
+  avgMonthlyWetWastePerHousehold: number;
+  avgMonthlyDryWastePerHousehold: number;
+  avgMonthlyTotalWeightPerHousehold: number;
+  extrapolatedTotalWetWaste: number;
+  extrapolatedTotalDryWaste: number;
+  extrapolatedTotalWeight: number;
 }

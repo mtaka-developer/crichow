@@ -1,4 +1,4 @@
-import { RawDataRecord, CleanedDataRecord, KPIData, HouseholdCategoryData, FilterState } from '@/types/data';
+import { RawDataRecord, CleanedDataRecord, KPIData, HouseholdCategoryData, FilterState, DryWasteFilterState, RecyclableMaterialKPIData, GroupAnalysisData, ExtrapolationData } from '@/types/data';
 
 // Business household names as specified in requirements
 export const BUSINESS_HOUSEHOLDS = [
@@ -212,4 +212,169 @@ export function getUniqueValues(data: CleanedDataRecord[]) {
   const households = [...new Set(data.map(record => record.householdName).filter(name => name.trim() !== ''))].sort();
   
   return { groups, households };
+}
+
+/**
+ * Apply dry waste specific filters to data
+ */
+export function filterDryWasteData(data: CleanedDataRecord[], filters: DryWasteFilterState): CleanedDataRecord[] {
+  return data.filter(record => {
+    // Date range filter
+    if (filters.dateRange.start && record.date < filters.dateRange.start) {
+      return false;
+    }
+    if (filters.dateRange.end && record.date > filters.dateRange.end) {
+      return false;
+    }
+    
+    // Group filter
+    if (filters.selectedGroup && filters.selectedGroup !== 'all' && record.group !== filters.selectedGroup) {
+      return false;
+    }
+    
+    // Household filter
+    if (filters.selectedHousehold && filters.selectedHousehold !== 'all' && record.householdName !== filters.selectedHousehold) {
+      return false;
+    }
+    
+    return true;
+  });
+}
+
+/**
+ * Calculate recyclable material KPIs from filtered records
+ */
+export function calculateRecyclableMaterialKPIs(data: CleanedDataRecord[]): RecyclableMaterialKPIData {
+  const totalHdpe = data.reduce((sum, record) => sum + record.hdpe, 0);
+  const totalPet = data.reduce((sum, record) => sum + record.pet, 0);
+  const totalPp = data.reduce((sum, record) => sum + record.pp, 0);
+  const totalGlass = data.reduce((sum, record) => sum + record.glass, 0);
+  const totalPaper = data.reduce((sum, record) => sum + record.paperWaste, 0);
+  const totalMetal = data.reduce((sum, record) => sum + record.metal, 0);
+  
+  return {
+    hdpe: totalHdpe,
+    pet: totalPet,
+    pp: totalPp,
+    glass: totalGlass,
+    paper: totalPaper,
+    metal: totalMetal
+  };
+}
+
+/**
+ * Calculate group analysis data from filtered records
+ */
+export function calculateGroupAnalysisData(data: CleanedDataRecord[]): GroupAnalysisData[] {
+  // Group data by group name
+  const groupMap: Record<string, {
+    totalWetWaste: number;
+    totalDryWaste: number;
+    hdpe: number;
+    pet: number;
+    pp: number;
+    glass: number;
+    paper: number;
+    metal: number;
+  }> = {};
+
+  data.forEach(record => {
+    if (!groupMap[record.group]) {
+      groupMap[record.group] = {
+        totalWetWaste: 0,
+        totalDryWaste: 0,
+        hdpe: 0,
+        pet: 0,
+        pp: 0,
+        glass: 0,
+        paper: 0,
+        metal: 0
+      };
+    }
+
+    const group = groupMap[record.group];
+    group.totalWetWaste += record.wetWaste;
+    group.totalDryWaste += record.dryWaste;
+    group.hdpe += record.hdpe;
+    group.pet += record.pet;
+    group.pp += record.pp;
+    group.glass += record.glass;
+    group.paper += record.paperWaste;
+    group.metal += record.metal;
+  });
+
+  // Convert to array with total weight calculation and sort by total weight (highest first)
+  return Object.entries(groupMap)
+    .map(([groupName, groupData]) => ({
+      groupName,
+      totalWetWaste: groupData.totalWetWaste,
+      totalDryWaste: groupData.totalDryWaste,
+      totalWeight: groupData.totalWetWaste + groupData.totalDryWaste,
+      hdpe: groupData.hdpe,
+      pet: groupData.pet,
+      pp: groupData.pp,
+      glass: groupData.glass,
+      paper: groupData.paper,
+      metal: groupData.metal
+    }))
+    .sort((a, b) => b.totalWeight - a.totalWeight);
+}
+
+/**
+ * Calculate extrapolation data from entire dataset for future projections
+ */
+export function calculateExtrapolationData(
+  data: CleanedDataRecord[], 
+  targets: { numberOfGroups: number; numberOfHouseholds: number; numberOfWeeks: number }
+): ExtrapolationData {
+  // Get unique households and weeks from entire dataset
+  const uniqueHouseholds = new Set(data.map(record => record.householdName).filter(name => name.trim() !== ''));
+  const uniqueWeeks = new Set(data.map(record => record.weekNumber));
+  
+  const totalHouseholds = uniqueHouseholds.size;
+  const totalWeeks = uniqueWeeks.size;
+  
+  // Calculate total sums
+  const totalWetWaste = data.reduce((sum, record) => sum + record.wetWaste, 0);
+  const totalDryWaste = data.reduce((sum, record) => sum + record.dryWaste, 0);
+  
+  // Row 2: Average weekly generation per household
+  // Formula: Total sum / Total households / Total weeks
+  const avgWeeklyWetWastePerHousehold = totalHouseholds > 0 && totalWeeks > 0 
+    ? totalWetWaste / totalHouseholds / totalWeeks 
+    : 0;
+  const avgWeeklyDryWastePerHousehold = totalHouseholds > 0 && totalWeeks > 0 
+    ? totalDryWaste / totalHouseholds / totalWeeks 
+    : 0;
+  const avgWeeklyTotalWeightPerHousehold = avgWeeklyWetWastePerHousehold + avgWeeklyDryWastePerHousehold;
+  
+  // Row 3: Average daily generation per household (weekly ÷ 7)
+  const avgDailyWetWastePerHousehold = avgWeeklyWetWastePerHousehold / 7;
+  const avgDailyDryWastePerHousehold = avgWeeklyDryWastePerHousehold / 7;
+  const avgDailyTotalWeightPerHousehold = avgWeeklyTotalWeightPerHousehold / 7;
+  
+  // Row 4: Average monthly generation per household (weekly × 4)
+  const avgMonthlyWetWastePerHousehold = avgWeeklyWetWastePerHousehold * 4;
+  const avgMonthlyDryWastePerHousehold = avgWeeklyDryWastePerHousehold * 4;
+  const avgMonthlyTotalWeightPerHousehold = avgWeeklyTotalWeightPerHousehold * 4;
+  
+  // Row 5: Extrapolated totals (weekly average × target households × target weeks)
+  const extrapolatedTotalWetWaste = avgWeeklyWetWastePerHousehold * targets.numberOfHouseholds * targets.numberOfWeeks;
+  const extrapolatedTotalDryWaste = avgWeeklyDryWastePerHousehold * targets.numberOfHouseholds * targets.numberOfWeeks;
+  const extrapolatedTotalWeight = extrapolatedTotalWetWaste + extrapolatedTotalDryWaste;
+  
+  return {
+    avgWeeklyWetWastePerHousehold,
+    avgWeeklyDryWastePerHousehold,
+    avgWeeklyTotalWeightPerHousehold,
+    avgDailyWetWastePerHousehold,
+    avgDailyDryWastePerHousehold,
+    avgDailyTotalWeightPerHousehold,
+    avgMonthlyWetWastePerHousehold,
+    avgMonthlyDryWastePerHousehold,
+    avgMonthlyTotalWeightPerHousehold,
+    extrapolatedTotalWetWaste,
+    extrapolatedTotalDryWaste,
+    extrapolatedTotalWeight
+  };
 }
