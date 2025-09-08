@@ -27,7 +27,7 @@ export default function KPICard({ title, value, unit, icon, colorClass = "text-m
             {title}
           </p>
           <div className="flex items-baseline">
-            <p className={`text-3xl font-bold ${colorClass} font-anton`}>
+            <p className={`text-3xl font-bold text-dark-gray`}>
               {formatValue(value)}
             </p>
             {unit && (

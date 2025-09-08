@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 interface DashboardPageWrapperProps {
-  title: string;
+  title?: string;
   children: ReactNode;
 }
 

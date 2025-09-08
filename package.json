@@ -11,13 +11,16 @@
     "dev-fresh": "npm run clear-cache && rm -rf node_modules/.cache && next dev --turbopack"
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.23.12",
     "jose": "^6.1.0",
     "leaflet": "^1.9.4",
     "next": "15.5.2",
     "react": "19.1.0",
+    "react-day-picker": "^9.9.0",
     "react-dom": "19.1.0",
     "react-leaflet": "^5.0.0",
+    "react-select": "^5.10.2",
     "recharts": "^3.1.2"
   },
   "devDependencies": {

@@ -96,7 +96,7 @@ export default function CopyOfDryWasteAnalysisPage() {
 
   if (error) {
     return (
-      <DashboardPageWrapper title="Copy of Dry Waste Analysis">
+      <DashboardPageWrapper >
         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
           <div className="flex items-center">
             <svg className="w-6 h-6 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,18 +113,8 @@ export default function CopyOfDryWasteAnalysisPage() {
   }
 
   return (
-    <DashboardPageWrapper title="Copy of Dry Waste Analysis">
-      {/* Data Overview */}
-      <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div className="flex items-center">
-          <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="text-blue-800 font-poppins text-sm">
-            <strong>{filteredData.length.toLocaleString()}</strong> records matching current filters for dry waste analysis
-          </span>
-        </div>
-      </div>
+    <DashboardPageWrapper>
+
 
       {/* Filters */}
       <DryWasteFilterComponents 

@@ -100,7 +100,7 @@ export default function SummaryPage() {
 
   if (loading) {
     return (
-      <DashboardPageWrapper title="Summary">
+      <DashboardPageWrapper >
         <div className="flex items-center justify-center min-h-64">
           <div className="flex items-center space-x-3">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-mtaka-green"></div>
@@ -113,7 +113,7 @@ export default function SummaryPage() {
 
   if (error) {
     return (
-      <DashboardPageWrapper title="Summary">
+      <DashboardPageWrapper >
         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
           <div className="flex items-center">
             <svg className="w-6 h-6 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,23 +130,9 @@ export default function SummaryPage() {
   }
 
   return (
-    <DashboardPageWrapper title="Summary">
-      {/* Data Overview */}
-      <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div className="flex items-center">
-          <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="text-blue-800 font-poppins text-sm">
-            <strong>{rawData.length.toLocaleString()}</strong> raw records loaded, 
-            <strong> {cleanedData.length.toLocaleString()}</strong> records after cleaning, 
-            <strong> {filteredData.length.toLocaleString()}</strong> records matching current filters
-          </span>
-        </div>
-      </div>
-
+    <DashboardPageWrapper>
       {/* Filters */}
-      <FilterComponents 
+      <FilterComponents
         filters={filters}
         onFiltersChange={setFilters}
         groups={uniqueValues.groups}
@@ -155,7 +141,9 @@ export default function SummaryPage() {
 
       {/* KPI Cards Grid */}
       <div className="mb-8">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4 font-anton">Key Performance Indicators</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-4 font-sans">
+          Key Performance Indicators
+        </h3>
         <KPIGrid data={kpiData} />
       </div>
 
@@ -163,34 +151,52 @@ export default function SummaryPage() {
       <HouseholdCategorization data={householdCategoryData} />
 
       {/* Data Quality Indicators */}
-      <div className="mt-8 bg-gray-50 p-6 rounded-lg">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 font-anton">Data Quality Indicators</h3>
+      <div className="mt-8 bg-gray-50 p-6 rounded-lg font-poppins">
+        <h3 className="text-xl font-bold text-gray-900 mb-4 font-sans">
+          Data Quality Indicators
+        </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center">
-            <div className="text-2xl font-bold text-mtaka-green font-anton">{uniqueValues.groups.length}</div>
-            <div className="text-sm text-gray-600 font-poppins">Total Groups</div>
+            <div className="text-2xl font-bold text-mtaka-green ">
+              {uniqueValues.groups.length}
+            </div>
+            <div className="text-sm text-gray-600 font-poppins">
+              Total Groups
+            </div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-practical-orange font-anton">{uniqueValues.households.length}</div>
-            <div className="text-sm text-gray-600 font-poppins">Total Households</div>
+            <div className="text-2xl font-bold text-practical-orange ">
+              {uniqueValues.households.length}
+            </div>
+            <div className="text-sm text-gray-600 font-poppins">
+              Total Households
+            </div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600 font-anton">
+            <div className="text-2xl font-bold text-mtaka-green">
               {((cleanedData.length / rawData.length) * 100).toFixed(1)}%
             </div>
-            <div className="text-sm text-gray-600 font-poppins">Data Quality</div>
+            <div className="text-sm text-gray-600 font-poppins">
+              Data Quality
+            </div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600 font-anton">
+            <div className="text-2xl font-bold text-practical-orange ">
               {cleanedData.length > 0 ? (
                 <>
-                  {new Date(Math.min(...cleanedData.map(d => d.date.getTime()))).toLocaleDateString()} - {new Date(Math.max(...cleanedData.map(d => d.date.getTime()))).toLocaleDateString()}
+                  {new Date(
+                    Math.min(...cleanedData.map((d) => d.date.getTime()))
+                  ).toLocaleDateString()}{" "}
+                  -{" "}
+                  {new Date(
+                    Math.max(...cleanedData.map((d) => d.date.getTime()))
+                  ).toLocaleDateString()}
                 </>
               ) : (
-                'No Data'
+                "No Data"
               )}
             </div>
-            <div className="text-sm text-gray-600 font-poppins">Date Range</div>
+            <div className="text-sm text-gray-600 ">Date Range</div>
           </div>
         </div>
       </div>
