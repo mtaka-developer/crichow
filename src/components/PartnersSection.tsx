@@ -8,9 +8,6 @@ export default function PartnersSection() {
           <h2 className="font-anton text-4xl text-dark-gray mb-6">
             The <span className="text-practical-orange">Partners</span>
           </h2>
-          <p className="font-poppins text-xl text-gray-600 max-w-3xl mx-auto">
-            Combining international development expertise with local innovation
-          </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
