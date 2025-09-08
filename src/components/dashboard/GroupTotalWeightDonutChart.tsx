@@ -60,7 +60,7 @@ export default function GroupTotalWeightDonutChart({ data }: GroupTotalWeightDon
     
     return (
       <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-        <p className="font-semibold font-anton text-gray-900 mb-2">
+        <p className="font-semibold font-poppins text-gray-900 mb-2">
           {data.name}
         </p>
         <div className="space-y-1">
@@ -124,7 +124,7 @@ export default function GroupTotalWeightDonutChart({ data }: GroupTotalWeightDon
 
   return (
     <div>
-      <h4 className="text-xl font-semibold text-gray-900 mb-4 font-anton">
+      <h4 className="text-lg font-bold text-gray-800 mb-4 font-poppins">
         Group by Total Weight
       </h4>
       
@@ -133,7 +133,7 @@ export default function GroupTotalWeightDonutChart({ data }: GroupTotalWeightDon
           <p className="font-poppins">No data available for the selected filters</p>
         </div>
       ) : (
-        <div className="h-96">
+        <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -158,8 +158,9 @@ export default function GroupTotalWeightDonutChart({ data }: GroupTotalWeightDon
                 verticalAlign="bottom"
                 height={36}
                 wrapperStyle={{
-                  fontSize: '12px',
-                  paddingTop: '20px'
+                  fontSize: '11px',
+                  paddingTop: '15px',
+                  fontFamily: 'Poppins, sans-serif'
                 }}
                 formatter={(value, entry) => (
                   <span style={{ color: entry.color }}>

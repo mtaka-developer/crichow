@@ -32,7 +32,7 @@ export default function DryWetWasteByGroupChart({ data }: DryWetWasteByGroupChar
     
     return (
       <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-        <p className="font-semibold font-anton text-gray-900 mb-2">
+        <p className="font-semibold font-poppins text-gray-900 mb-2">
           {label}
         </p>
         <div className="space-y-1">
@@ -57,7 +57,7 @@ export default function DryWetWasteByGroupChart({ data }: DryWetWasteByGroupChar
               <span className="text-sm font-poppins text-gray-700">
                 Total:
               </span>
-              <span className="text-sm font-bold font-anton text-gray-900">
+              <span className="text-sm font-bold font-poppins text-gray-900">
                 {total.toFixed(1)} kg
               </span>
             </div>
@@ -69,7 +69,7 @@ export default function DryWetWasteByGroupChart({ data }: DryWetWasteByGroupChar
 
   return (
     <div>
-      <h4 className="text-xl font-semibold text-gray-900 mb-4 font-anton">
+      <h4 className="text-lg font-bold text-gray-800 mb-4 font-poppins">
         Dry and Wet Waste by Group (kg)
       </h4>
       
@@ -84,31 +84,35 @@ export default function DryWetWasteByGroupChart({ data }: DryWetWasteByGroupChar
               data={chartData}
               layout="horizontal"
               margin={{
-                top: 20,
-                right: 30,
-                left: 80,
-                bottom: 20
+                top: 10,
+                right: 20,
+                left: 100,
+                bottom: 10
               }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
               <XAxis 
                 type="number"
-                fontSize={12}
+                fontSize={11}
                 stroke="#6b7280"
                 domain={[0, 'dataMax']}
+                tick={{ fontFamily: 'Poppins, sans-serif' }}
               />
               <YAxis 
                 type="category"
                 dataKey="groupName"
-                fontSize={12}
+                fontSize={11}
                 stroke="#6b7280"
-                width={70}
+                width={90}
+                tick={{ fontFamily: 'Poppins, sans-serif' }}
+                interval={0}
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend 
                 wrapperStyle={{ 
-                  paddingTop: '20px', 
-                  fontSize: '12px' 
+                  paddingTop: '15px', 
+                  fontSize: '11px',
+                  fontFamily: 'Poppins, sans-serif'
                 }}
               />
               

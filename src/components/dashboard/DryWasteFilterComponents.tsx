@@ -33,14 +33,14 @@ export default function DryWasteFilterComponents({ filters, onFiltersChange, gro
   const handleGroupChange = (value: string) => {
     onFiltersChange({
       ...filters,
-      selectedGroup: value
+      selectedGroups: value === 'all' ? [] : [value]
     });
   };
 
   const handleHouseholdChange = (value: string) => {
     onFiltersChange({
       ...filters,
-      selectedHousehold: value
+      selectedHouseholds: value === 'all' ? [] : [value]
     });
   };
 
@@ -75,13 +75,26 @@ export default function DryWasteFilterComponents({ filters, onFiltersChange, gro
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4 font-anton">Filters</h3>
+    <div className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-300 mb-6">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-bold text-gray-900 font-sans">Filters</h3>
+        <button
+          onClick={() => onFiltersChange({
+            dateRange: { start: null, end: null },
+            selectedGroups: [],
+            selectedHouseholds: [],
+            selectedMaterialTypes: MATERIAL_TYPE_OPTIONS.map(option => option.value)
+          })}
+          className="text-sm text-mtaka-green hover:text-green-700 font-medium font-poppins"
+        >
+          Clear All Filters
+        </button>
+      </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Date Range Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2 font-poppins">
+          <label className="block text-sm font-medium text-gray-800 mb-2 font-poppins">
             Date Range
           </label>
           <div className="space-y-2">
@@ -89,14 +102,14 @@ export default function DryWasteFilterComponents({ filters, onFiltersChange, gro
               type="date"
               value={formatDateForInput(filters.dateRange.start)}
               onChange={(e) => handleDateRangeChange('start', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-mtaka-green focus:border-mtaka-green font-poppins text-sm"
+              className="w-full px-3 py-2 border-2 border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-mtaka-green focus:border-mtaka-green font-poppins text-sm bg-white shadow-sm text-gray-700"
               placeholder="Start Date"
             />
             <input
               type="date"
               value={formatDateForInput(filters.dateRange.end)}
               onChange={(e) => handleDateRangeChange('end', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-mtaka-green focus:border-mtaka-green font-poppins text-sm"
+              className="w-full px-3 py-2 border-2 border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-mtaka-green focus:border-mtaka-green font-poppins text-sm bg-white shadow-sm text-gray-700"
               placeholder="End Date"
             />
           </div>
@@ -104,13 +117,20 @@ export default function DryWasteFilterComponents({ filters, onFiltersChange, gro
 
         {/* Group Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2 font-poppins">
+          <label className="block text-sm font-medium text-gray-800 mb-2 font-poppins">
             Group
           </label>
           <select
-            value={filters.selectedGroup}
+            value={filters.selectedGroups.length === 0 ? 'all' : filters.selectedGroups[0]}
             onChange={(e) => handleGroupChange(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-mtaka-green focus:border-mtaka-green font-poppins text-sm"
+            className="w-full px-3 py-2 border-2 border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-mtaka-green focus:border-mtaka-green font-poppins text-sm bg-white shadow-sm text-gray-700"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23374151' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+              backgroundPosition: 'right 0.5rem center',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: '1.5em 1.5em',
+              paddingRight: '2.5rem'
+            }}
           >
             <option value="all">All Groups</option>
             {groups.map((group) => (
@@ -123,13 +143,20 @@ export default function DryWasteFilterComponents({ filters, onFiltersChange, gro
 
         {/* Household Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2 font-poppins">
+          <label className="block text-sm font-medium text-gray-800 mb-2 font-poppins">
             Household Name
           </label>
           <select
-            value={filters.selectedHousehold}
+            value={filters.selectedHouseholds.length === 0 ? 'all' : filters.selectedHouseholds[0]}
             onChange={(e) => handleHouseholdChange(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-mtaka-green focus:border-mtaka-green font-poppins text-sm"
+            className="w-full px-3 py-2 border-2 border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-mtaka-green focus:border-mtaka-green font-poppins text-sm bg-white shadow-sm text-gray-700"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23374151' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+              backgroundPosition: 'right 0.5rem center',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: '1.5em 1.5em',
+              paddingRight: '2.5rem'
+            }}
           >
             <option value="all">All Households</option>
             {households.map((household) => (
@@ -142,10 +169,10 @@ export default function DryWasteFilterComponents({ filters, onFiltersChange, gro
 
         {/* Material Type Multi-Select Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2 font-poppins">
+          <label className="block text-sm font-medium text-gray-800 mb-2 font-poppins">
             Material Type
           </label>
-          <div className="border border-gray-300 rounded-md p-3 bg-white max-h-40 overflow-y-auto">
+          <div className="border-2 border-gray-400 rounded-md p-3 bg-white max-h-40 overflow-y-auto shadow-sm">
             <div className="flex justify-between mb-2">
               <button
                 type="button"
@@ -182,20 +209,6 @@ export default function DryWasteFilterComponents({ filters, onFiltersChange, gro
         </div>
       </div>
 
-      {/* Clear Filters Button */}
-      <div className="mt-6 flex justify-end">
-        <button
-          onClick={() => onFiltersChange({
-            dateRange: { start: null, end: null },
-            selectedGroup: 'all',
-            selectedHousehold: 'all',
-            selectedMaterialTypes: MATERIAL_TYPE_OPTIONS.map(option => option.value)
-          })}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-mtaka-green focus:ring-offset-2 font-poppins"
-        >
-          Reset All Filters
-        </button>
-      </div>
     </div>
   );
 }

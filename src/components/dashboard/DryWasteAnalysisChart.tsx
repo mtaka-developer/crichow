@@ -75,7 +75,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
     
     return (
       <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-        <p className="font-semibold font-anton text-gray-900 mb-2">
+        <p className="font-semibold font-poppins text-gray-900 mb-2">
           {label ? formatXAxisLabel(label) : ''}
         </p>
         <div className="space-y-1">
@@ -102,9 +102,6 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
 
   return (
     <div>
-      <h4 className="text-xl font-semibold text-gray-900 mb-4 font-anton">
-        Dry Waste Analysis
-      </h4>
       
       {chartData.length === 0 ? (
         <div className="flex items-center justify-center h-64 text-gray-500">
@@ -116,10 +113,10 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
             <LineChart
               data={chartData}
               margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 60
+                top: 10,
+                right: 20,
+                left: 40,
+                bottom: 80
               }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
@@ -129,24 +126,28 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                 angle={-45}
                 textAnchor="end"
                 height={80}
-                fontSize={12}
+                fontSize={11}
                 stroke="#6b7280"
+                interval="preserveStartEnd"
+                tick={{ fontFamily: 'Poppins, sans-serif' }}
               />
               <YAxis 
-                fontSize={12}
+                fontSize={11}
                 stroke="#6b7280"
+                tick={{ fontFamily: 'Poppins, sans-serif' }}
                 label={{ 
                   value: 'Quantity (kg)', 
                   angle: -90, 
                   position: 'insideLeft',
-                  style: { textAnchor: 'middle' }
+                  style: { textAnchor: 'middle', fontFamily: 'Poppins, sans-serif', fontSize: '12px' }
                 }}
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend 
                 wrapperStyle={{ 
-                  paddingTop: '20px', 
-                  fontSize: '12px' 
+                  paddingTop: '15px', 
+                  fontSize: '11px',
+                  fontFamily: 'Poppins, sans-serif'
                 }}
               />
               
@@ -156,8 +157,8 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   dataKey="HDPE"
                   stroke={MATERIAL_COLORS.HDPE}
                   strokeWidth={2}
-                  dot={{ fill: MATERIAL_COLORS.HDPE, strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6 }}
+                  dot={{ fill: MATERIAL_COLORS.HDPE, strokeWidth: 1, r: 3 }}
+                  activeDot={{ r: 5 }}
                 />
               )}
               
@@ -167,8 +168,8 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   dataKey="PET"
                   stroke={MATERIAL_COLORS.PET}
                   strokeWidth={2}
-                  dot={{ fill: MATERIAL_COLORS.PET, strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6 }}
+                  dot={{ fill: MATERIAL_COLORS.PET, strokeWidth: 1, r: 3 }}
+                  activeDot={{ r: 5 }}
                 />
               )}
               
@@ -178,8 +179,8 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   dataKey="PP"
                   stroke={MATERIAL_COLORS.PP}
                   strokeWidth={2}
-                  dot={{ fill: MATERIAL_COLORS.PP, strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6 }}
+                  dot={{ fill: MATERIAL_COLORS.PP, strokeWidth: 1, r: 3 }}
+                  activeDot={{ r: 5 }}
                 />
               )}
               
@@ -189,8 +190,8 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   dataKey="Glass"
                   stroke={MATERIAL_COLORS.Glass}
                   strokeWidth={2}
-                  dot={{ fill: MATERIAL_COLORS.Glass, strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6 }}
+                  dot={{ fill: MATERIAL_COLORS.Glass, strokeWidth: 1, r: 3 }}
+                  activeDot={{ r: 5 }}
                 />
               )}
               
@@ -200,8 +201,8 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   dataKey="Paper"
                   stroke={MATERIAL_COLORS.Paper}
                   strokeWidth={2}
-                  dot={{ fill: MATERIAL_COLORS.Paper, strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6 }}
+                  dot={{ fill: MATERIAL_COLORS.Paper, strokeWidth: 1, r: 3 }}
+                  activeDot={{ r: 5 }}
                 />
               )}
               
@@ -211,8 +212,8 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   dataKey="Metal"
                   stroke={MATERIAL_COLORS.Metal}
                   strokeWidth={2}
-                  dot={{ fill: MATERIAL_COLORS.Metal, strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6 }}
+                  dot={{ fill: MATERIAL_COLORS.Metal, strokeWidth: 1, r: 3 }}
+                  activeDot={{ r: 5 }}
                 />
               )}
             </LineChart>

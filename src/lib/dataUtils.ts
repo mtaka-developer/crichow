@@ -128,13 +128,13 @@ export function filterData(data: CleanedDataRecord[], filters: FilterState): Cle
       return false;
     }
     
-    // Group filter
-    if (filters.selectedGroup && filters.selectedGroup !== 'all' && record.group !== filters.selectedGroup) {
+    // Groups filter - if groups are selected, record must be in one of them
+    if (filters.selectedGroups && filters.selectedGroups.length > 0 && !filters.selectedGroups.includes(record.group)) {
       return false;
     }
     
-    // Household filter
-    if (filters.selectedHousehold && filters.selectedHousehold !== 'all' && record.householdName !== filters.selectedHousehold) {
+    // Households filter - if households are selected, record must be in one of them
+    if (filters.selectedHouseholds && filters.selectedHouseholds.length > 0 && !filters.selectedHouseholds.includes(record.householdName)) {
       return false;
     }
     
@@ -227,13 +227,13 @@ export function filterDryWasteData(data: CleanedDataRecord[], filters: DryWasteF
       return false;
     }
     
-    // Group filter
-    if (filters.selectedGroup && filters.selectedGroup !== 'all' && record.group !== filters.selectedGroup) {
+    // Groups filter - if groups are selected, record must be in one of them
+    if (filters.selectedGroups && filters.selectedGroups.length > 0 && !filters.selectedGroups.includes(record.group)) {
       return false;
     }
     
-    // Household filter
-    if (filters.selectedHousehold && filters.selectedHousehold !== 'all' && record.householdName !== filters.selectedHousehold) {
+    // Households filter - if households are selected, record must be in one of them
+    if (filters.selectedHouseholds && filters.selectedHouseholds.length > 0 && !filters.selectedHouseholds.includes(record.householdName)) {
       return false;
     }
     

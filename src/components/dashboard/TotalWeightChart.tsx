@@ -51,7 +51,7 @@ export default function TotalWeightChart({ data }: TotalWeightChartProps) {
     
     return (
       <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-        <p className="font-semibold font-anton text-gray-900 mb-2">
+        <p className="font-semibold font-poppins text-gray-900 mb-2">
           {label ? formatXAxisLabel(label) : ''}
         </p>
         <div className="flex items-center justify-between space-x-4">
@@ -73,9 +73,6 @@ export default function TotalWeightChart({ data }: TotalWeightChartProps) {
 
   return (
     <div>
-      <h4 className="text-xl font-semibold text-gray-900 mb-4 font-anton">
-        Total Weight (kg) over Time
-      </h4>
       
       {chartData.length === 0 ? (
         <div className="flex items-center justify-center h-64 text-gray-500">
@@ -87,10 +84,10 @@ export default function TotalWeightChart({ data }: TotalWeightChartProps) {
             <LineChart
               data={chartData}
               margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 60
+                top: 10,
+                right: 20,
+                left: 40,
+                bottom: 80
               }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
@@ -100,17 +97,20 @@ export default function TotalWeightChart({ data }: TotalWeightChartProps) {
                 angle={-45}
                 textAnchor="end"
                 height={80}
-                fontSize={12}
+                fontSize={11}
                 stroke="#6b7280"
+                interval="preserveStartEnd"
+                tick={{ fontFamily: 'Poppins, sans-serif' }}
               />
               <YAxis 
-                fontSize={12}
+                fontSize={11}
                 stroke="#6b7280"
+                tick={{ fontFamily: 'Poppins, sans-serif' }}
                 label={{ 
                   value: 'Total Weight (kg)', 
                   angle: -90, 
                   position: 'insideLeft',
-                  style: { textAnchor: 'middle' }
+                  style: { textAnchor: 'middle', fontFamily: 'Poppins, sans-serif', fontSize: '12px' }
                 }}
               />
               <Tooltip content={<CustomTooltip />} />
@@ -119,9 +119,9 @@ export default function TotalWeightChart({ data }: TotalWeightChartProps) {
                 type="monotone"
                 dataKey="totalWeight"
                 stroke="#059669" // mtaka-green
-                strokeWidth={3}
-                dot={{ fill: '#059669', strokeWidth: 2, r: 5 }}
-                activeDot={{ r: 7, stroke: '#059669', strokeWidth: 2, fill: '#fff' }}
+                strokeWidth={2}
+                dot={{ fill: '#059669', strokeWidth: 1, r: 3 }}
+                activeDot={{ r: 5, stroke: '#059669', strokeWidth: 2, fill: '#fff' }}
               />
             </LineChart>
           </ResponsiveContainer>

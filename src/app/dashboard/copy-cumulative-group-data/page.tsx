@@ -2,7 +2,7 @@ import DashboardPageWrapper from "@/components/dashboard/DashboardPageWrapper";
 
 export default function CopyCumulativeGroupDataPage() {
   return (
-    <DashboardPageWrapper title="Copy of Cumulative Group Data">
+    <DashboardPageWrapper>
       <div className="bg-white rounded-lg shadow-sm p-6">
         <div className="flex items-center space-x-3 mb-6">
           <div className="flex-shrink-0">

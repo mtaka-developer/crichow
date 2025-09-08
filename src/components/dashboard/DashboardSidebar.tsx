@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 interface NavigationItem {
@@ -53,9 +54,21 @@ export default function DashboardSidebar() {
         <div className="flex min-h-0 flex-1 flex-col bg-white shadow-lg">
           {/* Logo */}
           <div className="flex h-16 flex-shrink-0 items-center px-6 border-b border-gray-200">
-            <Link href="/" className="font-anton text-2xl">
-              <span className="text-mtaka-green">CRI</span>
-              <span className="text-practical-orange">CHOW</span>
+            <Link href="/" className="flex items-center space-x-3">
+              <Image 
+                src="/m-taka-logo.png" 
+                alt="M-Taka Logo" 
+                width={32} 
+                height={32}
+                className="drop-shadow-sm"
+              />
+              <Image 
+                src="/pa-logo.png" 
+                alt="Practical Action Logo" 
+                width={32} 
+                height={32}
+                className="drop-shadow-sm"
+              />
             </Link>
           </div>
           

@@ -39,7 +39,7 @@ export default function DashboardHeader() {
       <div className="flex h-16 justify-between items-center px-6">
         {/* Page Title Area */}
         <div className="flex items-center">
-          <h1 className="text-2xl font-semibold text-gray-900 font-anton">
+          <h1 className="text-2xl font-semibold text-gray-900 font-poppins">
             Dashboard
           </h1>
         </div>

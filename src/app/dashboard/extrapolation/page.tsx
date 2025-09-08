@@ -65,7 +65,7 @@ export default function ExtrapolationPage() {
 
   if (loading) {
     return (
-      <DashboardPageWrapper title="Extrapolation">
+      <DashboardPageWrapper>
         <div className="flex items-center justify-center min-h-64">
           <div className="flex items-center space-x-3">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-mtaka-green"></div>
@@ -78,7 +78,7 @@ export default function ExtrapolationPage() {
 
   if (error) {
     return (
-      <DashboardPageWrapper title="Extrapolation">
+      <DashboardPageWrapper>
         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
           <div className="flex items-center">
             <svg className="w-6 h-6 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,27 +95,12 @@ export default function ExtrapolationPage() {
   }
 
   return (
-    <DashboardPageWrapper title="Extrapolation">
-      {/* Page Description */}
-      <div className="mb-8 bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-6">
-        <div className="flex items-center mb-3">
-          <svg className="w-6 h-6 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-          </svg>
-          <h3 className="text-lg font-semibold text-gray-900 font-anton">
-            Future Waste Generation Projections
-          </h3>
-        </div>
-        <p className="text-gray-700 font-poppins">
-          Based on historical data analysis, these projections estimate future waste generation 
-          for expanded program targets using calculated household averages across the entire dataset.
-        </p>
-      </div>
+    <DashboardPageWrapper>
 
       <div className="space-y-8">
         {/* Row 1: Project Target Inputs */}
         <div>
-          <h4 className="text-lg font-semibold text-gray-900 mb-4 font-anton">
+          <h4 className="text-xl font-bold text-gray-900 mb-4 font-sans">
             Project Target Inputs
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -154,7 +139,7 @@ export default function ExtrapolationPage() {
 
         {/* Row 2: Average Weekly Generation Per Household */}
         <div>
-          <h4 className="text-lg font-semibold text-gray-900 mb-4 font-anton">
+          <h4 className="text-xl font-bold text-gray-900 mb-4 font-sans">
             Average Weekly Generation Per Household
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -196,7 +181,7 @@ export default function ExtrapolationPage() {
 
         {/* Row 3: Average Daily Generation Per Household */}
         <div>
-          <h4 className="text-lg font-semibold text-gray-900 mb-4 font-anton">
+          <h4 className="text-xl font-bold text-gray-900 mb-4 font-sans">
             Average Daily Generation Per Household
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -238,7 +223,7 @@ export default function ExtrapolationPage() {
 
         {/* Row 4: Average Monthly Generation Per Household */}
         <div>
-          <h4 className="text-lg font-semibold text-gray-900 mb-4 font-anton">
+          <h4 className="text-xl font-bold text-gray-900 mb-4 font-sans">
             Average Monthly Generation Per Household
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -280,7 +265,7 @@ export default function ExtrapolationPage() {
 
         {/* Row 5: Extrapolated Total Weight */}
         <div>
-          <h4 className="text-lg font-semibold text-gray-900 mb-4 font-anton">
+          <h4 className="text-xl font-bold text-gray-900 mb-4 font-sans">
             Extrapolated Total Weight Projections
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

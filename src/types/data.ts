@@ -39,8 +39,8 @@ export interface FilterState {
     start: Date | null;
     end: Date | null;
   };
-  selectedGroup: string;
-  selectedHousehold: string;
+  selectedGroups: string[];
+  selectedHouseholds: string[];
 }
 
 export interface DryWasteFilterState {
@@ -48,8 +48,8 @@ export interface DryWasteFilterState {
     start: Date | null;
     end: Date | null;
   };
-  selectedGroup: string;
-  selectedHousehold: string;
+  selectedGroups: string[];
+  selectedHouseholds: string[];
   selectedMaterialTypes: string[];
 }
 

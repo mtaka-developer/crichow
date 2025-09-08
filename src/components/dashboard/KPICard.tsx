@@ -6,7 +6,7 @@ interface KPICardProps {
   colorClass?: string;
 }
 
-export default function KPICard({ title, value, unit, icon, colorClass = "text-mtaka-green" }: KPICardProps) {
+export default function KPICard({ title, value, unit, icon, colorClass = "text-black" }: KPICardProps) {
   const formatValue = (val: number | string): string => {
     if (typeof val === 'string') return val;
     
@@ -19,6 +19,14 @@ export default function KPICard({ title, value, unit, icon, colorClass = "text-m
     return val.toLocaleString('en-US', { maximumFractionDigits: 1 });
   };
 
+  const getIconColorClass = () => {
+    // Map number colors to icon colors (mtaka green, practical orange, gray, teal)
+    if (colorClass.includes('mtaka-green')) return 'text-mtaka-green';
+    if (colorClass.includes('practical-orange')) return 'text-practical-orange';
+    if (colorClass.includes('teal')) return 'text-teal-600';
+    return 'text-gray-600';
+  };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between">
@@ -27,7 +35,7 @@ export default function KPICard({ title, value, unit, icon, colorClass = "text-m
             {title}
           </p>
           <div className="flex items-baseline">
-            <p className={`text-3xl font-bold ${colorClass} font-anton`}>
+            <p className={`text-3xl font-bold ${colorClass}`}>
               {formatValue(value)}
             </p>
             {unit && (
@@ -38,7 +46,7 @@ export default function KPICard({ title, value, unit, icon, colorClass = "text-m
           </div>
         </div>
         {icon && (
-          <div className={`flex-shrink-0 ${colorClass} opacity-80`}>
+          <div className={`flex-shrink-0 ${getIconColorClass()} opacity-80`}>
             {icon}
           </div>
         )}

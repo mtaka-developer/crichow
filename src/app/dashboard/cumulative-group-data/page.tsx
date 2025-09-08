@@ -17,8 +17,8 @@ export default function CumulativeGroupDataPage() {
   
   const [filters, setFilters] = useState<FilterState>({
     dateRange: { start: null, end: null },
-    selectedGroup: 'all',
-    selectedHousehold: 'all'
+    selectedGroups: [],
+    selectedHouseholds: []
   });
 
   const [groupAnalysisData, setGroupAnalysisData] = useState<GroupAnalysisData[]>([]);
@@ -74,7 +74,7 @@ export default function CumulativeGroupDataPage() {
 
   if (loading) {
     return (
-      <DashboardPageWrapper title="Cumulative Group Data">
+      <DashboardPageWrapper>
         <div className="flex items-center justify-center min-h-64">
           <div className="flex items-center space-x-3">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-mtaka-green"></div>
@@ -87,14 +87,14 @@ export default function CumulativeGroupDataPage() {
 
   if (error) {
     return (
-      <DashboardPageWrapper title="Cumulative Group Data">
+      <DashboardPageWrapper>
         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
           <div className="flex items-center">
             <svg className="w-6 h-6 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div>
-              <h3 className="text-lg font-semibold text-red-800 font-anton">Error Loading Data</h3>
+              <h3 className="text-lg font-bold text-red-800 font-sans">Error Loading Data</h3>
               <p className="text-red-600 font-poppins">{error}</p>
             </div>
           </div>
@@ -104,19 +104,7 @@ export default function CumulativeGroupDataPage() {
   }
 
   return (
-    <DashboardPageWrapper title="Cumulative Group Data">
-      {/* Data Overview */}
-      <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div className="flex items-center">
-          <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="text-blue-800 font-poppins text-sm">
-            <strong>{filteredData.length.toLocaleString()}</strong> records from 
-            <strong> {groupAnalysisData.length}</strong> groups for comparative analysis
-          </span>
-        </div>
-      </div>
+    <DashboardPageWrapper>
 
       {/* Filters */}
       <FilterComponents 
@@ -126,21 +114,37 @@ export default function CumulativeGroupDataPage() {
         households={uniqueValues.households}
       />
 
+      {/* Analysis Section Header */}
+      <div className="mb-6">
+        <h3 className="text-xl font-bold text-gray-900 font-sans">Group Analysis Overview</h3>
+        <p className="text-sm text-gray-600 font-poppins mt-1">
+          Comprehensive waste collection analysis across all groups
+        </p>
+      </div>
+
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
         {/* Dry and Wet Waste by Group Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <DryWetWasteByGroupChart data={groupAnalysisData} />
         </div>
 
         {/* Group by Total Weight Donut Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           <GroupTotalWeightDonutChart data={groupAnalysisData} />
         </div>
       </div>
 
+      {/* Detailed Analysis Section Header */}
+      <div className="mb-6">
+        <h3 className="text-xl font-bold text-gray-900 font-sans">Material Breakdown Analysis</h3>
+        <p className="text-sm text-gray-600 font-poppins mt-1">
+          Detailed view of recyclable materials by group
+        </p>
+      </div>
+
       {/* Waste Categories by Group Chart - Full Width */}
-      <div className="mt-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
         <WasteCategoriesByGroupChart data={groupAnalysisData} />
       </div>
     </DashboardPageWrapper>
