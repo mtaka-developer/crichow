@@ -225,13 +225,6 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
           </ResponsiveContainer>
         </div>
       )}
-
-      <div className="mt-4 text-sm text-gray-600 font-poppins">
-        <p>
-          Showing {selectedMaterialTypes.length} of 6 material types. Use the
-          Material Type filter to show/hide specific materials.
-        </p>
-      </div>
     </div>
   );
 }

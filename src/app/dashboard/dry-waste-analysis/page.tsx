@@ -175,7 +175,7 @@ export default function CopyOfDryWasteAnalysisPage() {
               Dry Waste Analysis
             </h4>
             <p className="text-sm text-gray-600 font-poppins mt-1">
-              Material breakdown over time
+              Breakdown for {filters.selectedMaterialTypes.length} material types over time
             </p>
           </div>
           <DryWasteAnalysisChart
