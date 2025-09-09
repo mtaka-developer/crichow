@@ -117,7 +117,7 @@ export default function ExtrapolationPage() {
                   />
                 </svg>
               }
-              colorClass="text-blue-600"
+              colorClass="text-gray-600"
             />
           </div>
         </div>
@@ -147,7 +147,7 @@ export default function ExtrapolationPage() {
                   />
                 </svg>
               }
-              colorClass="text-blue-600"
+              colorClass="text-mtaka-green"
             />
             <KPICard
               title="Avg Dry Waste"
@@ -189,7 +189,7 @@ export default function ExtrapolationPage() {
                   />
                 </svg>
               }
-              colorClass="text-mtaka-green"
+              colorClass="text-gray-600"
             />
           </div>
         </div>
@@ -219,7 +219,7 @@ export default function ExtrapolationPage() {
                   />
                 </svg>
               }
-              colorClass="text-blue-600"
+              colorClass="text-mtaka-green"
             />
             <KPICard
               title="Avg Dry Waste"
@@ -261,7 +261,7 @@ export default function ExtrapolationPage() {
                   />
                 </svg>
               }
-              colorClass="text-mtaka-green"
+              colorClass="text-gray-600"
             />
           </div>
         </div>
@@ -291,7 +291,7 @@ export default function ExtrapolationPage() {
                   />
                 </svg>
               }
-              colorClass="text-blue-600"
+              colorClass="text-mtaka-green"
             />
             <KPICard
               title="Avg Dry Waste"
@@ -333,7 +333,7 @@ export default function ExtrapolationPage() {
                   />
                 </svg>
               }
-              colorClass="text-mtaka-green"
+              colorClass="text-gray-600"
             />
           </div>
         </div>
@@ -363,7 +363,7 @@ export default function ExtrapolationPage() {
                   />
                 </svg>
               }
-              colorClass="text-blue-600"
+              colorClass="text-mtaka-green"
             />
             <KPICard
               title="Total Dry Waste"
@@ -405,7 +405,7 @@ export default function ExtrapolationPage() {
                   />
                 </svg>
               }
-              colorClass="text-mtaka-green"
+              colorClass="text-gray-600"
             />
           </div>
         </div>

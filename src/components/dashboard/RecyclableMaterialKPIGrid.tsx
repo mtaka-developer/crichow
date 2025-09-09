@@ -46,7 +46,7 @@ export default function RecyclableMaterialKPIGrid({ data }: RecyclableMaterialKP
         value={data.hdpe}
         unit="kg"
         icon={icons.hdpe}
-        colorClass="text-blue-600"
+        colorClass="text-mtaka-green"
       />
       
       <KPICard
@@ -54,7 +54,7 @@ export default function RecyclableMaterialKPIGrid({ data }: RecyclableMaterialKP
         value={data.pet}
         unit="kg"
         icon={icons.pet}
-        colorClass="text-green-600"
+        colorClass="text-practical-orange"
       />
       
       <KPICard
@@ -62,7 +62,7 @@ export default function RecyclableMaterialKPIGrid({ data }: RecyclableMaterialKP
         value={data.pp}
         unit="kg"
         icon={icons.pp}
-        colorClass="text-purple-600"
+        colorClass="text-gray-600"
       />
       
       <KPICard
@@ -70,7 +70,7 @@ export default function RecyclableMaterialKPIGrid({ data }: RecyclableMaterialKP
         value={data.glass}
         unit="kg"
         icon={icons.glass}
-        colorClass="text-indigo-600"
+        colorClass="text-mtaka-green"
       />
       
       <KPICard
@@ -86,7 +86,7 @@ export default function RecyclableMaterialKPIGrid({ data }: RecyclableMaterialKP
         value={data.metal}
         unit="kg"
         icon={icons.metal}
-        colorClass="text-mtaka-green"
+        colorClass="text-gray-600"
       />
     </div>
   );
