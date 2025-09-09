@@ -156,7 +156,6 @@ export function filterData(data: CleanedDataRecord[], filters: FilterState): Cle
  */
 export function calculateKPIs(data: CleanedDataRecord[]): KPIData {
   const uniqueGroups = new Set(data.map(record => record.group));
-  const uniqueHouseholds = new Set(data.map(record => record.householdName).filter(name => name.trim() !== ''));
   const uniqueWeeks = new Set(data.map(record => record.weekNumber));
   
   const totalWetWaste = data.reduce((sum, record) => sum + record.wetWaste, 0);
@@ -164,7 +163,7 @@ export function calculateKPIs(data: CleanedDataRecord[]): KPIData {
   
   return {
     numberOfGroups: uniqueGroups.size,
-    numberOfHouseholds: uniqueHouseholds.size,
+    numberOfHouseholds: 138, // Hardcoded value as requested
     numberOfWeeks: uniqueWeeks.size,
     totalWetWaste,
     totalDryWaste,

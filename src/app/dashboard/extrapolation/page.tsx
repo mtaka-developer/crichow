@@ -25,7 +25,7 @@ export default function ExtrapolationPage() {
   // Project targets - hardcoded as per requirements
   const projectTargets = useMemo(() => ({
     numberOfGroups: 15,
-    numberOfHouseholds: 2000,
+    numberOfHouseholds: 138,
     numberOfWeeks: 31
   }), []);
 
