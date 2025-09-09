@@ -155,7 +155,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   fontFamily: "Poppins, sans-serif",
                 }}
               />
-              
+
               {selectedMaterialTypes.includes("HDPE") && (
                 <Line
                   type="monotone"
@@ -166,7 +166,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   activeDot={{ r: 5 }}
                 />
               )}
-              
+
               {selectedMaterialTypes.includes("PET") && (
                 <Line
                   type="monotone"
@@ -177,7 +177,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   activeDot={{ r: 5 }}
                 />
               )}
-              
+
               {selectedMaterialTypes.includes("PP") && (
                 <Line
                   type="monotone"
@@ -188,7 +188,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   activeDot={{ r: 5 }}
                 />
               )}
-              
+
               {selectedMaterialTypes.includes("Glass") && (
                 <Line
                   type="monotone"
@@ -199,7 +199,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   activeDot={{ r: 5 }}
                 />
               )}
-              
+
               {selectedMaterialTypes.includes("Paper") && (
                 <Line
                   type="monotone"
@@ -210,7 +210,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   activeDot={{ r: 5 }}
                 />
               )}
-              
+
               {selectedMaterialTypes.includes("Metal") && (
                 <Line
                   type="monotone"

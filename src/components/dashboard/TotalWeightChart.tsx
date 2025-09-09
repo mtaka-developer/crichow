@@ -72,30 +72,30 @@ export default function TotalWeightChart({ data }: TotalWeightChartProps) {
   };
 
   return (
-    <div>
+    <div className="h-96">
       
       {chartData.length === 0 ? (
         <div className="flex items-center justify-center h-64 text-gray-500">
           <p className="font-poppins">No data available for the selected filters</p>
         </div>
       ) : (
-        <div className="h-72">
+        <div className="h-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}
               margin={{
-                top: 5,
-                right: 15,
+                top: 20,
+                right: 20,
                 left: 20,
-                bottom: 60
+                bottom: 5
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
               <XAxis 
                 dataKey="month"
                 tickFormatter={formatXAxisLabel}
-                angle={-45}
-                textAnchor="end"
+                angle={0}
+                textAnchor="middle"
                 height={80}
                 fontSize={11}
                 stroke="#6b7280"
@@ -127,12 +127,6 @@ export default function TotalWeightChart({ data }: TotalWeightChartProps) {
           </ResponsiveContainer>
         </div>
       )}
-      
-      <div className="mt-4 text-sm text-gray-600 font-poppins">
-        <p>
-          Combined weight of wet waste and dry waste materials collected over time.
-        </p>
-      </div>
     </div>
   );
 }

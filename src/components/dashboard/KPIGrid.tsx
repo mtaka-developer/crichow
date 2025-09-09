@@ -49,19 +49,19 @@ export default function KPIGrid({ data }: KPIGridProps) {
           icon={icons.groups}
           colorClass="text-mtaka-green"
         />
-        
+
         <KPICard
           title="Number of Households"
           value={data.numberOfHouseholds}
           icon={icons.households}
           colorClass="text-practical-orange"
         />
-        
+
         <KPICard
           title="Number of Weeks"
           value={data.numberOfWeeks}
           icon={icons.weeks}
-          colorClass="text-mtaka-green"
+          colorClass="text-gray-600"
         />
       </div>
 
@@ -72,9 +72,9 @@ export default function KPIGrid({ data }: KPIGridProps) {
           value={data.totalWetWaste}
           unit="kg"
           icon={icons.wetWaste}
-          colorClass="text-blue-600"
+          colorClass="text-mtaka-green"
         />
-        
+
         <KPICard
           title="Total Dry Waste"
           value={data.totalDryWaste}
@@ -82,13 +82,13 @@ export default function KPIGrid({ data }: KPIGridProps) {
           icon={icons.dryWaste}
           colorClass="text-practical-orange"
         />
-        
+
         <KPICard
           title="Total Weight"
           value={data.totalWeight}
           unit="kg"
           icon={icons.totalWeight}
-          colorClass="text-mtaka-green"
+          colorClass="text-gray-600"
         />
       </div>
     </div>

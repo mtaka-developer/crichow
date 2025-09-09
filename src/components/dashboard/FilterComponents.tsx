@@ -177,7 +177,7 @@ export default function FilterComponents({ filters, onFiltersChange, groups, hou
   };
 
   return (
-    <div className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-300 mb-6">
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-300 mb-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-bold text-gray-900 font-sans">Filters</h3>
         <button
