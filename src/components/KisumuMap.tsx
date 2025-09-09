@@ -31,17 +31,22 @@ function parseLocationString(locationString: string): { lat: number; lng: number
   // Parse degrees/minutes/seconds format like "-0°5'17\"N   34°45'39\"E"
   const dmsMatch = locationString.match(/(-?\d+)°(\d+)'(\d+)"?([NS])?\s*(-?\d+)°(\d+)'(\d+)"?([EW])?/);
   if (dmsMatch) {
-    let lat = parseInt(dmsMatch[1]) + parseInt(dmsMatch[2])/60 + parseInt(dmsMatch[3])/3600;
-    let lng = parseInt(dmsMatch[5]) + parseInt(dmsMatch[6])/60 + parseInt(dmsMatch[7])/3600;
+    // Calculate base coordinates
+    let lat = Math.abs(parseInt(dmsMatch[1])) + parseInt(dmsMatch[2])/60 + parseInt(dmsMatch[3])/3600;
+    let lng = Math.abs(parseInt(dmsMatch[5])) + parseInt(dmsMatch[6])/60 + parseInt(dmsMatch[7])/3600;
     
-    // Handle N/S and E/W indicators
-    if (dmsMatch[4] === 'S') lat = -Math.abs(lat);
-    if (dmsMatch[8] === 'W') lng = -Math.abs(lng);
+    // Apply sign from original input or direction indicators
+    // If there's a negative sign in the original degrees, respect it regardless of N/S indicator
+    if (dmsMatch[1].startsWith('-')) {
+      lat = -lat;
+    } else if (dmsMatch[4] === 'S') {
+      lat = -lat;
+    }
     
-    // If no N/S/E/W indicators but coordinates suggest they should be negative (for Kisumu location)
-    if (!dmsMatch[4] && !dmsMatch[8]) {
-      lat = -Math.abs(lat); // Kisumu is south of equator
-      // lng should be positive for Kisumu (east of prime meridian)
+    if (dmsMatch[5].startsWith('-')) {
+      lng = -lng;
+    } else if (dmsMatch[8] === 'W') {
+      lng = -lng;
     }
     
     return { lat, lng };
