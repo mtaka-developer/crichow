@@ -6,17 +6,32 @@ interface KPICardProps {
   colorClass?: string;
 }
 
-export default function KPICard({ title, value, unit, icon, colorClass = "text-mtaka-green" }: KPICardProps) {
+export default function KPICard({ title, value, unit, icon, colorClass = "text-black" }: KPICardProps) {
   const formatValue = (val: number | string): string => {
     if (typeof val === 'string') return val;
     
-    // Format large numbers with commas
+    // Check if it's a whole number (no decimal part)
+    const isWholeNumber = Number.isInteger(val);
+    
+    // Format large numbers with commas, no decimal places for thousands+
     if (val >= 1000) {
-      return val.toLocaleString('en-US', { maximumFractionDigits: 1 });
+      return val.toLocaleString('en-US', { maximumFractionDigits: 0 });
     }
     
-    // Show up to 1 decimal place for smaller numbers
-    return val.toLocaleString('en-US', { maximumFractionDigits: 1 });
+    // For smaller numbers, show no decimals if it's a whole number, otherwise 2 decimals
+    if (isWholeNumber) {
+      return val.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    } else {
+      return val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+  };
+
+  const getIconColorClass = () => {
+    // Map number colors to icon colors (mtaka green, practical orange, gray, teal)
+    if (colorClass.includes('mtaka-green')) return 'text-mtaka-green';
+    if (colorClass.includes('practical-orange')) return 'text-practical-orange';
+    if (colorClass.includes('teal')) return 'text-teal-600';
+    return 'text-gray-600';
   };
 
   return (
@@ -27,7 +42,7 @@ export default function KPICard({ title, value, unit, icon, colorClass = "text-m
             {title}
           </p>
           <div className="flex items-baseline">
-            <p className={`text-3xl font-bold text-dark-gray`}>
+            <p className={`text-3xl font-bold ${colorClass}`}>
               {formatValue(value)}
             </p>
             {unit && (
@@ -38,7 +53,7 @@ export default function KPICard({ title, value, unit, icon, colorClass = "text-m
           </div>
         </div>
         {icon && (
-          <div className={`flex-shrink-0 ${colorClass} opacity-80`}>
+          <div className={`flex-shrink-0 ${getIconColorClass()} opacity-80`}>
             {icon}
           </div>
         )}

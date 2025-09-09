@@ -60,23 +60,23 @@ export default function GroupTotalWeightDonutChart({ data }: GroupTotalWeightDon
     
     return (
       <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-        <p className="font-semibold font-anton text-gray-900 mb-2">
+        <p className="font-semibold font-poppins text-gray-900 mb-2">
           {data.name}
         </p>
         <div className="space-y-1">
           <div className="flex items-center justify-between space-x-4">
-            <span className="text-sm font-poppins text-gray-700">
+            <span className="text-sm font-poppins text-gray-800">
               Total Weight:
             </span>
-            <span className="text-sm font-semibold font-poppins">
+            <span className="text-sm font-semibold font-poppins text-gray-900">
               {data.value.toFixed(1)} kg
             </span>
           </div>
           <div className="flex items-center justify-between space-x-4">
-            <span className="text-sm font-poppins text-gray-700">
+            <span className="text-sm font-poppins text-gray-800">
               Percentage:
             </span>
-            <span className="text-sm font-semibold font-poppins">
+            <span className="text-sm font-semibold font-poppins text-gray-900">
               {data.percentage.toFixed(1)}%
             </span>
           </div>
@@ -124,7 +124,7 @@ export default function GroupTotalWeightDonutChart({ data }: GroupTotalWeightDon
 
   return (
     <div>
-      <h4 className="text-xl font-semibold text-gray-900 mb-4 font-anton">
+      <h4 className="text-lg font-bold text-gray-800 mb-4 font-poppins">
         Group by Total Weight
       </h4>
       
@@ -133,17 +133,17 @@ export default function GroupTotalWeightDonutChart({ data }: GroupTotalWeightDon
           <p className="font-poppins">No data available for the selected filters</p>
         </div>
       ) : (
-        <div className="h-96">
+        <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={chartData}
                 cx="50%"
-                cy="50%"
+                cy="45%"
                 labelLine={false}
                 label={CustomLabel}
-                outerRadius={120}
-                innerRadius={60}
+                outerRadius={100}
+                innerRadius={50}
                 fill="#8884d8"
                 dataKey="value"
                 stroke="#fff"
@@ -158,8 +158,9 @@ export default function GroupTotalWeightDonutChart({ data }: GroupTotalWeightDon
                 verticalAlign="bottom"
                 height={36}
                 wrapperStyle={{
-                  fontSize: '12px',
-                  paddingTop: '20px'
+                  fontSize: '11px',
+                  paddingTop: '15px',
+                  fontFamily: 'Poppins, sans-serif'
                 }}
                 formatter={(value, entry) => (
                   <span style={{ color: entry.color }}>
@@ -171,13 +172,6 @@ export default function GroupTotalWeightDonutChart({ data }: GroupTotalWeightDon
           </ResponsiveContainer>
         </div>
       )}
-      
-      <div className="mt-4 text-sm text-gray-600 font-poppins">
-        <p>
-          Each slice represents a group&apos;s share of total waste collection. 
-          Percentages shown for slices over 5%.
-        </p>
-      </div>
     </div>
   );
 }

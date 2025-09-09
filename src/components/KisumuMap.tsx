@@ -8,25 +8,84 @@ import 'leaflet/dist/leaflet.css';
 // Kisumu coordinates (approximate)
 const KISUMU_CENTER = { lat: -0.0917, lng: 34.7680 };
 
-// Ward locations (approximate coordinates for covered areas)
-const wardLocations = [
-  { name: "Manyatta", lat: -0.0850, lng: 34.7650, households: 15 },
-  { name: "Nyalenda", lat: -0.0980, lng: 34.7420, households: 12 },
-  { name: "Kibuye", lat: -0.0800, lng: 34.7600, households: 8 },
-  { name: "Obunga", lat: -0.1100, lng: 34.7500, households: 10 },
-  { name: "Otonglo", lat: -0.0750, lng: 34.7750, households: 9 },
-  { name: "Kamakowa", lat: -0.0900, lng: 34.7800, households: 11 },
-  { name: "Migosi", lat: -0.0950, lng: 34.7900, households: 13 },
-  { name: "Kolwa Central", lat: -0.1000, lng: 34.7300, households: 14 },
-  { name: "Kolwa East", lat: -0.1050, lng: 34.7350, households: 16 },
-  { name: "South West Kisumu", lat: -0.1200, lng: 34.7400, households: 7 },
-  { name: "Central Kisumu", lat: -0.0917, lng: 34.7680, households: 18 },
-  { name: "Market Milimani", lat: -0.0850, lng: 34.7720, households: 5 },
-  { name: "Kondele", lat: -0.0800, lng: 34.7500, households: 10 }
+// Ward locations for the 6 specific wards mentioned
+const WARD_LOCATIONS = [
+  { name: "Kaloleni Shaurimoyo", lat: -0.0850, lng: 34.7650, households: 0 },
+  { name: "Nyalenda A", lat: -0.0980, lng: 34.7420, households: 0 },
+  { name: "Nyalenda B", lat: -0.1020, lng: 34.7450, households: 0 },
+  { name: "Railways", lat: -0.0900, lng: 34.7680, households: 0 },
+  { name: "Manyatta A", lat: -0.0850, lng: 34.7700, households: 0 },
+  { name: "Central", lat: -0.0917, lng: 34.7680, households: 0 }
 ];
+
+interface DataLocation {
+  lat: number;
+  lng: number;
+  group: string;
+  householdName: string;
+}
+
+function parseLocationString(locationString: string): { lat: number; lng: number } | null {
+  if (!locationString) return null;
+  
+  // Parse format like "-0.0833° 34.7667°"
+  const match = locationString.match(/(-?\d+\.\d+)°\s*(-?\d+\.\d+)°/);
+  if (!match) return null;
+  
+  return {
+    lat: parseFloat(match[1]),
+    lng: parseFloat(match[2])
+  };
+}
 
 export default function KisumuMap() {
   const [leafletIcon, setLeafletIcon] = useState<L.DivIcon | null>(null);
+  const [dataLocations, setDataLocations] = useState<DataLocation[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Load data from practical-action-data.json
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const response = await fetch('/practical-action-data.json');
+        if (!response.ok) throw new Error('Failed to load data');
+        
+        const rawData = await response.json();
+        
+        // Process each record and extract unique locations
+        const locationMap = new Map<string, DataLocation>();
+        
+        rawData.forEach((record: {
+          Location?: string;
+          Group?: string;
+          "HOUSEHOLD NAME"?: string;
+        }) => {
+          if (record.Location && record.Group && record["HOUSEHOLD NAME"]) {
+            const coords = parseLocationString(record.Location);
+            if (coords) {
+              const key = `${coords.lat}_${coords.lng}_${record.Group}`;
+              if (!locationMap.has(key)) {
+                locationMap.set(key, {
+                  lat: coords.lat,
+                  lng: coords.lng,
+                  group: record.Group,
+                  householdName: record["HOUSEHOLD NAME"]
+                });
+              }
+            }
+          }
+        });
+        
+        setDataLocations(Array.from(locationMap.values()));
+      } catch (error) {
+        console.error('Error loading map data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   useEffect(() => {
     // Fix default marker icon issue - TypeScript-compatible approach
@@ -84,22 +143,44 @@ export default function KisumuMap() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
-        {/* Markers for each ward */}
-        {leafletIcon && wardLocations.map((ward, index) => (
+        {/* Markers for ward locations */}
+        {leafletIcon && WARD_LOCATIONS.map((ward, index) => (
           <Marker
-            key={index}
+            key={`ward-${index}`}
             position={[ward.lat, ward.lng]}
             icon={leafletIcon}
           >
             <Popup>
               <div className="p-2">
                 <h3 className="font-bold text-lg text-green-600 mb-1">
-                  {ward.name}
+                  {ward.name} Ward
                 </h3>
                 <div className="text-sm text-gray-600">
-                  <p><strong>{ward.households}</strong> active households</p>
                   <p className="text-xs mt-1">
                     CRICHOW project coverage area
+                  </p>
+                </div>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+        
+        {/* Markers for actual data collection points */}
+        {leafletIcon && !loading && dataLocations.map((location, index) => (
+          <Marker
+            key={`data-${index}`}
+            position={[location.lat, location.lng]}
+            icon={leafletIcon}
+          >
+            <Popup>
+              <div className="p-2">
+                <h3 className="font-bold text-lg text-blue-600 mb-1">
+                  {location.group}
+                </h3>
+                <div className="text-sm text-gray-600">
+                  <p><strong>Household:</strong> {location.householdName}</p>
+                  <p className="text-xs mt-1">
+                    Active data collection point
                   </p>
                 </div>
               </div>
@@ -127,8 +208,8 @@ export default function KisumuMap() {
                 CRICHOW Coverage Area
               </h3>
               <p className="text-sm text-gray-600">
-                13 wards currently covered<br/>
-                Expanding to 14 wards in Phase 2
+                6 wards currently covered<br/>
+                Kaloleni Shaurimoyo, Nyalenda A, Nyalenda B, Railways, Manyatta A, Central
               </p>
             </div>
           </Popup>

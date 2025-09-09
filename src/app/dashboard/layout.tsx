@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 
 interface DashboardLayoutProps {
@@ -10,13 +11,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <DashboardHeader />
-
-      {/* Main Content Area */}
-      <div className="w-full">
-
-        {/* Page Content */}
-        <main className="pt-24 p-6">{children}</main>
-      </div>
+      
+      {/* Page Content with top padding to account for fixed header */}
+      <main className="pt-24 p-6 max-w-7xl mx-auto">
+        {children}
+      </main>
     </div>
   );
 }

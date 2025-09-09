@@ -1,18 +1,20 @@
 import { ReactNode } from "react";
 
 interface DashboardPageWrapperProps {
-  title?: string;
   children: ReactNode;
+  title?: string;
 }
 
-export default function DashboardPageWrapper({ title, children }: DashboardPageWrapperProps) {
+export default function DashboardPageWrapper({ children, title }: DashboardPageWrapperProps) {
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="space-y-6">
       {/* Page Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 font-anton">{title}</h1>
-      </div>
-
+      {title && (
+        <div className="border-b border-gray-200 pb-4">
+          <h2 className="text-2xl font-bold text-gray-900 font-sans">{title}</h2>
+        </div>
+      )}
+      
       {/* Page Content */}
       <div className="space-y-6">
         {children}

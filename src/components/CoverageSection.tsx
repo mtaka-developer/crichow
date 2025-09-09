@@ -14,17 +14,19 @@ export default function CoverageSection() {
       description: "Community waste handler groups"
     },
     {
-      number: 13,
+      number: 6,
       label: "Wards",
-      description: "Areas covered, expanding to 14 in Phase 2"
+      description: "Key wards covered in the pilot project"
     }
   ];
 
   const areas = [
-    "Manyatta", "Nyalenda", "Kibuye", "Obunga", 
-    "Otonglo", "Kamakowa", "Migosi", "Kolwa Central",
-    "Kolwa East", "South West Kisumu", "Central Kisumu",
-    "Market Milimani", "Kondele"
+    "Kaloleni Shaurimoyo Ward",
+    "Nyalenda A Ward", 
+    "Nyalenda B Ward",
+    "Railways Ward",
+    "Manyatta A Ward",
+    "Central Ward"
   ];
 
   return (
@@ -69,11 +71,11 @@ export default function CoverageSection() {
           <div>
             <h3 className="font-anton text-2xl text-dark-gray mb-6">Coverage Areas</h3>
             <p className="font-poppins text-gray-600 mb-6">
-              The pilot project spans 13 wards across Kisumu City. Expansion to all 14 wards 
-              is planned in Phase 2 to ensure city-wide representation.
+              The CRICHOW project operates across 6 key wards in Kisumu City, focusing on 
+              areas with high waste generation and community engagement potential.
             </p>
             
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3">
               {areas.map((area, index) => (
                 <div 
                   key={index} 

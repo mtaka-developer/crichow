@@ -3,25 +3,23 @@
 import { useState, useEffect, useMemo } from 'react';
 import DashboardPageWrapper from "@/components/dashboard/DashboardPageWrapper";
 import KPICard from "@/components/dashboard/KPICard";
-import { RawDataRecord, ExtrapolationData } from '@/types/data';
-import { cleanData, calculateExtrapolationData } from '@/lib/dataUtils';
+import { ExtrapolationData } from '@/types/data';
 
 export default function ExtrapolationPage() {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [extrapolationData, setExtrapolationData] = useState<ExtrapolationData>({
-    avgWeeklyWetWastePerHousehold: 0,
-    avgWeeklyDryWastePerHousehold: 0,
-    avgWeeklyTotalWeightPerHousehold: 0,
-    avgDailyWetWastePerHousehold: 0,
-    avgDailyDryWastePerHousehold: 0,
-    avgDailyTotalWeightPerHousehold: 0,
-    avgMonthlyWetWastePerHousehold: 0,
-    avgMonthlyDryWastePerHousehold: 0,
-    avgMonthlyTotalWeightPerHousehold: 0,
-    extrapolatedTotalWetWaste: 0,
-    extrapolatedTotalDryWaste: 0,
-    extrapolatedTotalWeight: 0
+  const [extrapolationData] = useState<ExtrapolationData>({
+    avgWeeklyWetWastePerHousehold: 23.73,
+    avgWeeklyDryWastePerHousehold: 15.42,
+    avgWeeklyTotalWeightPerHousehold: 39.15,
+    avgDailyWetWastePerHousehold: 3.39,
+    avgDailyDryWastePerHousehold: 2.2,
+    avgDailyTotalWeightPerHousehold: 5.59,
+    avgMonthlyWetWastePerHousehold: 94.92,
+    avgMonthlyDryWastePerHousehold: 61.67,
+    avgMonthlyTotalWeightPerHousehold: 156.59,
+    extrapolatedTotalWetWaste: 762000,
+    extrapolatedTotalDryWaste: 489000,
+    extrapolatedTotalWeight: 1251000
   });
 
   // Project targets - hardcoded as per requirements
@@ -31,37 +29,12 @@ export default function ExtrapolationPage() {
     numberOfWeeks: 31
   }), []);
 
-  // Load and process data on component mount
+  // Simulate loading since values are hardcoded
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        
-        // Load the JSON data
-        const response = await fetch('/practical-action-data.json');
-        if (!response.ok) {
-          throw new Error('Failed to load data');
-        }
-        
-        const data: RawDataRecord[] = await response.json();
-        
-        // Clean the data
-        const cleaned = cleanData(data);
-        
-        // Calculate extrapolation data using entire dataset
-        const extrapolation = calculateExtrapolationData(cleaned, projectTargets);
-        setExtrapolationData(extrapolation);
-        
-      } catch (err) {
-        console.error('Error loading data:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadData();
-  }, [projectTargets]);
+    setTimeout(() => {
+      setLoading(false);
+    }, 100);
+  }, []);
 
   if (loading) {
     return (
@@ -76,30 +49,13 @@ export default function ExtrapolationPage() {
     );
   }
 
-  if (error) {
-    return (
-      <DashboardPageWrapper >
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-          <div className="flex items-center">
-            <svg className="w-6 h-6 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <div>
-              <h3 className="text-lg font-semibold text-red-800">Error Loading Data</h3>
-              <p className="text-red-600 font-poppins">{error}</p>
-            </div>
-          </div>
-        </div>
-      </DashboardPageWrapper>
-    );
-  }
-
   return (
     <DashboardPageWrapper>
-      <div className="space-y-8 font-sans">
+
+      <div className="space-y-8">
         {/* Row 1: Project Target Inputs */}
         <div>
-          <h4 className="text-xl font-bold text-gray-900 mb-4">
+          <h4 className="text-xl font-bold text-gray-900 mb-4 font-sans">
             Project Target Inputs
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -168,7 +124,7 @@ export default function ExtrapolationPage() {
 
         {/* Row 2: Average Weekly Generation Per Household */}
         <div>
-          <h4 className="text-xl font-bold text-gray-900 mb-4">
+          <h4 className="text-xl font-bold text-gray-900 mb-4 font-sans">
             Average Weekly Generation Per Household
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -240,7 +196,7 @@ export default function ExtrapolationPage() {
 
         {/* Row 3: Average Daily Generation Per Household */}
         <div>
-          <h4 className="text-xl font-bold text-gray-900 mb-4">
+          <h4 className="text-xl font-bold text-gray-900 mb-4 font-sans">
             Average Daily Generation Per Household
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -312,7 +268,7 @@ export default function ExtrapolationPage() {
 
         {/* Row 4: Average Monthly Generation Per Household */}
         <div>
-          <h4 className="text-xl font-bold text-gray-900 mb-4">
+          <h4 className="text-xl font-bold text-gray-900 mb-4 font-sans">
             Average Monthly Generation Per Household
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -384,7 +340,7 @@ export default function ExtrapolationPage() {
 
         {/* Row 5: Extrapolated Total Weight */}
         <div>
-          <h4 className="text-xl font-bold text-gray-900 mb-4">
+          <h4 className="text-xl font-bold text-gray-900 mb-4 font-sans">
             Extrapolated Total Weight Projections
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -11,14 +11,13 @@ import { cleanData, filterData, calculateGroupAnalysisData, getUniqueValues } fr
 
 export default function CumulativeGroupDataPage() {
   const [cleanedData, setCleanedData] = useState<CleanedDataRecord[]>([]);
-  const [filteredData, setFilteredData] = useState<CleanedDataRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
   const [filters, setFilters] = useState<FilterState>({
     dateRange: { start: null, end: null },
-    selectedGroup: 'all',
-    selectedHousehold: 'all'
+    selectedGroups: [],
+    selectedHouseholds: []
   });
 
   const [groupAnalysisData, setGroupAnalysisData] = useState<GroupAnalysisData[]>([]);
@@ -41,7 +40,6 @@ export default function CumulativeGroupDataPage() {
         // Clean the data
         const cleaned = cleanData(data);
         setCleanedData(cleaned);
-        setFilteredData(cleaned); // Initially show all data
         
         // Get unique values for filters
         const unique = getUniqueValues(cleaned);
@@ -65,7 +63,6 @@ export default function CumulativeGroupDataPage() {
   useEffect(() => {
     if (cleanedData.length > 0) {
       const filtered = filterData(cleanedData, filters);
-      setFilteredData(filtered);
       
       // Recalculate group analysis data based on filtered data
       setGroupAnalysisData(calculateGroupAnalysisData(filtered));
@@ -94,7 +91,7 @@ export default function CumulativeGroupDataPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div>
-              <h3 className="text-lg font-semibold text-red-800 font-anton">Error Loading Data</h3>
+              <h3 className="text-lg font-bold text-red-800 font-sans">Error Loading Data</h3>
               <p className="text-red-600 font-poppins">{error}</p>
             </div>
           </div>
@@ -104,7 +101,7 @@ export default function CumulativeGroupDataPage() {
   }
 
   return (
-    <DashboardPageWrapper >
+    <DashboardPageWrapper>
 
       {/* Filters */}
       <FilterComponents 
@@ -115,20 +112,20 @@ export default function CumulativeGroupDataPage() {
       />
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
         {/* Dry and Wet Waste by Group Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
           <DryWetWasteByGroupChart data={groupAnalysisData} />
         </div>
 
         {/* Group by Total Weight Donut Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
           <GroupTotalWeightDonutChart data={groupAnalysisData} />
         </div>
       </div>
 
       {/* Waste Categories by Group Chart - Full Width */}
-      <div className="mt-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
         <WasteCategoriesByGroupChart data={groupAnalysisData} />
       </div>
     </DashboardPageWrapper>

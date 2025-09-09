@@ -40,51 +40,57 @@ export default function KPIGrid({ data }: KPIGridProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <KPICard
-        title="Number of Groups"
-        value={data.numberOfGroups}
-        icon={icons.groups}
-        colorClass="text-mtaka-green"
-      />
-      
-      <KPICard
-        title="Number of Households"
-        value={data.numberOfHouseholds}
-        icon={icons.households}
-        colorClass="text-practical-orange"
-      />
-      
-      <KPICard
-        title="Number of Weeks"
-        value={data.numberOfWeeks}
-        icon={icons.weeks}
-        colorClass="text-mtaka-green"
-      />
-      
-      <KPICard
-        title="Total Wet Waste"
-        value={data.totalWetWaste}
-        unit="kg"
-        icon={icons.wetWaste}
-        colorClass="text-blue-600"
-      />
-      
-      <KPICard
-        title="Total Dry Waste"
-        value={data.totalDryWaste}
-        unit="kg"
-        icon={icons.dryWaste}
-        colorClass="text-practical-orange"
-      />
-      
-      <KPICard
-        title="Total Weight"
-        value={data.totalWeight}
-        unit="kg"
-        icon={icons.totalWeight}
-        colorClass="text-mtaka-green"
-      />
+    <div className="space-y-6">
+      {/* First Row - Count Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <KPICard
+          title="Number of Groups"
+          value={data.numberOfGroups}
+          icon={icons.groups}
+          colorClass="text-mtaka-green"
+        />
+        
+        <KPICard
+          title="Number of Households"
+          value={data.numberOfHouseholds}
+          icon={icons.households}
+          colorClass="text-practical-orange"
+        />
+        
+        <KPICard
+          title="Number of Weeks"
+          value={data.numberOfWeeks}
+          icon={icons.weeks}
+          colorClass="text-mtaka-green"
+        />
+      </div>
+
+      {/* Second Row - Weight Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <KPICard
+          title="Total Wet Waste"
+          value={data.totalWetWaste}
+          unit="kg"
+          icon={icons.wetWaste}
+          colorClass="text-blue-600"
+        />
+        
+        <KPICard
+          title="Total Dry Waste"
+          value={data.totalDryWaste}
+          unit="kg"
+          icon={icons.dryWaste}
+          colorClass="text-practical-orange"
+        />
+        
+        <KPICard
+          title="Total Weight"
+          value={data.totalWeight}
+          unit="kg"
+          icon={icons.totalWeight}
+          colorClass="text-mtaka-green"
+        />
+      </div>
     </div>
   );
 }

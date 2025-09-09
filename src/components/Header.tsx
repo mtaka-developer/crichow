@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function Header() {
@@ -25,9 +26,21 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          <Link href="/" className="font-anton text-2xl">
-            <span className={`${isScrolled ? 'text-mtaka-green' : 'text-mtaka-green drop-shadow-lg'}`}>CRI</span>
-            <span className={`${isScrolled ? 'text-practical-orange' : 'text-practical-orange drop-shadow-lg'}`}>CHOW</span>
+          <Link href="/" className="flex items-center space-x-3">
+            <Image 
+              src="/m-taka-logo.png" 
+              alt="M-Taka Logo" 
+              width={40} 
+              height={40}
+              className="drop-shadow-lg"
+            />
+            <Image 
+              src="/pa-logo.png" 
+              alt="Practical Action Logo" 
+              width={40} 
+              height={40}
+              className="drop-shadow-lg"
+            />
           </Link>
           
           <nav className="hidden md:flex space-x-8">

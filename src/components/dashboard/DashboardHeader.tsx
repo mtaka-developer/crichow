@@ -41,8 +41,8 @@ const WasteAnalysisIcon = ({ className }: { className?: string }) => (
     fill="none"
     stroke="currentColor"
     strokeWidth="2"
-    strokeinecap="round"
-    stroke-linejoin="round"
+    strokeLinecap="round"
+    strokeLinejoin="round"
   >
     <path d="M3 3v16a2 2 0 0 0 2 2h16" />
     <path d="M18 17V9" />

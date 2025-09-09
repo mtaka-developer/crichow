@@ -6,7 +6,7 @@ interface HouseholdCategorizationProps {
 
 export default function HouseholdCategorization({ data }: HouseholdCategorizationProps) {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 font-poppins">
+    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
       <h3 className="text-xl font-bold text-gray-900 mb-6 font-sans">
         Household Categorization
       </h3>
@@ -15,7 +15,7 @@ export default function HouseholdCategorization({ data }: HouseholdCategorizatio
         {/* Domestic Households */}
         <div className="space-y-4">
           <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-            <h4 className="text-lg font-semibold text-gray-900 mb-3 font-sans flex items-center">
+            <h4 className="text-lg font-bold text-gray-900 mb-3 font-poppins flex items-center">
               <svg className="w-5 h-5 text-mtaka-green mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
@@ -31,7 +31,7 @@ export default function HouseholdCategorization({ data }: HouseholdCategorizatio
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-gray-700 font-poppins">Average Wet Waste</span>
                   <div className="text-right">
-                    <span className="text-lg font-bold text-mtaka-green">
+                    <span className="text-2xl font-bold text-blue-600">
                       {data.domestic.avgWeeklyWetWaste.toFixed(2)}
                     </span>
                     <span className="text-sm text-gray-500 ml-1">kg</span>
@@ -43,7 +43,7 @@ export default function HouseholdCategorization({ data }: HouseholdCategorizatio
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-gray-700 font-poppins">Average Dry Waste</span>
                   <div className="text-right">
-                    <span className="text-lg font-bold text-practical-orange">
+                    <span className="text-2xl font-bold text-practical-orange">
                       {data.domestic.avgWeeklyDryWaste.toFixed(2)}
                     </span>
                     <span className="text-sm text-gray-500 ml-1">kg</span>
@@ -57,7 +57,7 @@ export default function HouseholdCategorization({ data }: HouseholdCategorizatio
         {/* Business Households */}
         <div className="space-y-4">
           <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-            <h4 className="text-lg font-semibold text-gray-900 mb-3 font-sans flex items-center">
+            <h4 className="text-lg font-bold text-gray-900 mb-3 font-poppins flex items-center">
               <svg className="w-5 h-5 text-practical-orange mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
@@ -73,7 +73,7 @@ export default function HouseholdCategorization({ data }: HouseholdCategorizatio
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-gray-700 font-poppins">Average Wet Waste</span>
                   <div className="text-right">
-                    <span className="text-lg font-bold text-mtaka-green">
+                    <span className="text-2xl font-bold text-blue-600">
                       {data.business.avgWeeklyWetWaste.toFixed(2)}
                     </span>
                     <span className="text-sm text-gray-500 ml-1">kg</span>
@@ -85,7 +85,7 @@ export default function HouseholdCategorization({ data }: HouseholdCategorizatio
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-gray-700 font-poppins">Average Dry Waste</span>
                   <div className="text-right">
-                    <span className="text-lg font-bold text-practical-orange">
+                    <span className="text-2xl font-bold text-practical-orange">
                       {data.business.avgWeeklyDryWaste.toFixed(2)}
                     </span>
                     <span className="text-sm text-gray-500 ml-1">kg</span>
@@ -97,34 +97,6 @@ export default function HouseholdCategorization({ data }: HouseholdCategorizatio
         </div>
       </div>
 
-      {/* Summary comparison */}
-      <div className="mt-6 bg-gray-50 p-4 rounded-lg">
-        <h5 className="text-md font-bold text-gray-900 mb-3 font-sans">
-          Summary Comparison
-        </h5>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div>
-            <div className="text-sm text-gray-600 font-poppins">Domestic Households</div>
-            <div className="text-lg font-bold text-mtaka-green">{data.domestic.totalHouseholds}</div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-600 font-poppins">Business Households</div>
-            <div className="text-lg font-bold text-practical-orange">{data.business.totalHouseholds}</div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-600 font-poppins">Domestic Avg/Week</div>
-            <div className="text-lg font-bold text-mtaka-green ">
-              {(data.domestic.avgWeeklyWetWaste + data.domestic.avgWeeklyDryWaste).toFixed(1)} kg
-            </div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-600 font-poppins">Business Avg/Week</div>
-            <div className="text-lg font-bold text-practical-orange">
-              {(data.business.avgWeeklyWetWaste + data.business.avgWeeklyDryWaste).toFixed(1)} kg
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
