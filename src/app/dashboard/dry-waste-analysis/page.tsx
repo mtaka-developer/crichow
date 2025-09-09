@@ -142,7 +142,7 @@ export default function CopyOfDryWasteAnalysisPage() {
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
           <div className="mb-3">
             <h4 className="text-lg font-semibold text-gray-800 font-poppins">Dry Waste Analysis</h4>
-            <p className="text-sm text-gray-600 font-poppins mt-1">Material breakdown over time</p>
+            <p className="text-sm text-gray-600 font-poppins mt-1">Breakdown for {filters.selectedMaterialTypes.length} material types over time</p>
           </div>
           <DryWasteAnalysisChart 
             data={filteredData} 

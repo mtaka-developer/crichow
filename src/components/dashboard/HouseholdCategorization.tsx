@@ -31,7 +31,7 @@ export default function HouseholdCategorization({ data }: HouseholdCategorizatio
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-gray-700 font-poppins">Average Wet Waste</span>
                   <div className="text-right">
-                    <span className="text-2xl font-bold text-blue-600">
+                    <span className="text-2xl font-bold text-mtaka-green">
                       {data.domestic.avgWeeklyWetWaste.toFixed(2)}
                     </span>
                     <span className="text-sm text-gray-500 ml-1">kg</span>
@@ -73,7 +73,7 @@ export default function HouseholdCategorization({ data }: HouseholdCategorizatio
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-gray-700 font-poppins">Average Wet Waste</span>
                   <div className="text-right">
-                    <span className="text-2xl font-bold text-blue-600">
+                    <span className="text-2xl font-bold text-mtaka-green">
                       {data.business.avgWeeklyWetWaste.toFixed(2)}
                     </span>
                     <span className="text-sm text-gray-500 ml-1">kg</span>

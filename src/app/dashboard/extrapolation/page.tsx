@@ -262,15 +262,6 @@ export default function ExtrapolationPage() {
         </div>
       </div>
 
-      {/* Footer Note */}
-      <div className="mt-8 bg-gray-50 border border-gray-200 rounded-lg p-4">
-        <p className="text-sm text-gray-600 font-poppins">
-          <strong>Note:</strong> All calculations are based on the complete historical dataset. 
-          Weekly averages are calculated per household across all unique weeks in the data. 
-          Daily values are weekly averages ÷ 7, monthly values are weekly averages × 4. 
-          Final projections use the target values of 2,000 households over 31 weeks.
-        </p>
-      </div>
     </DashboardPageWrapper>
   );
 }

@@ -134,9 +134,12 @@ export function filterData(data: CleanedDataRecord[], filters: FilterState): Cle
       return false;
     }
     
-    // Groups filter - if groups are selected, record must be in one of them
-    if (filters.selectedGroups && filters.selectedGroups.length > 0 && !filters.selectedGroups.includes(record.group)) {
-      return false;
+    // Groups filter - convert display names back to internal keys for comparison
+    if (filters.selectedGroups && filters.selectedGroups.length > 0) {
+      const selectedGroupKeys = filters.selectedGroups.map(displayName => getGroupKeyFromDisplayName(displayName));
+      if (!selectedGroupKeys.includes(record.group)) {
+        return false;
+      }
     }
     
     // Households filter - if households are selected, record must be in one of them
@@ -169,16 +172,47 @@ export function calculateKPIs(data: CleanedDataRecord[]): KPIData {
   };
 }
 
+// Group name mapping from JSON abbreviations to full display names
+export const GROUP_NAME_MAPPING: Record<string, string> = {
+  'Kamakowa Jamtaka': 'Kamakowa Jamtaka CBO',
+  'Gracious Mums': 'Graceous Moms Women Group',
+  'Kel Takau': 'Kel Takau Youth Group',
+  'Kibuye WM': 'Kibuye Waste Management Group',
+  'Otonglo WM': 'Otonglo Waste Management Group',
+  'Nawal': 'Nawal Super Youth Group',
+  'Tech Taka': 'Tech Taka Solutions',
+  'Manyatta YRC': 'Manyatta Youth Resource Center',
+  'Aidi': 'AIDI Youth Group',
+  'Amazing Grace': 'Amazing Grace CBO',
+  'Determined Achievers': 'Nyalenda Determined Achievers',
+  'Duke WMS': 'Duke Waste Management Services Enterprise',
+  'United Solutions WM': 'United Solutions Waste Group'
+};
+
+// Groups that have business data (mixed domestic and business)
+export const GROUPS_WITH_BUSINESS_DATA = [
+  'Tech Taka',
+  'Kibuye WM', 
+  'Manyatta YRC',
+  'United Solutions WM'
+];
+
 /**
  * Calculate household category data (Business vs Domestic)
- * Matches Looker Studio logic: average weekly waste per household per week
+ * Updated logic based on group classification:
+ * 1. Domestic: All data EXCEPT from groups with business data
+ * 2. Business: Only data from groups with business data
  */
 export function calculateHouseholdCategories(data: CleanedDataRecord[]): HouseholdCategoryData {
-  // Filter domestic-only households (excluding business households)
-  const domesticOnlyData = data.filter(record => !record.isBusinessHousehold && record.householdName.trim() !== '');
+  // Filter data for domestic-only groups (excluding groups with business data)
+  const domesticOnlyData = data.filter(record => 
+    !GROUPS_WITH_BUSINESS_DATA.includes(record.group) && record.householdName.trim() !== ''
+  );
   
-  // All households data (domestic + business combined)
-  const allHouseholdsData = data.filter(record => record.householdName.trim() !== '');
+  // Filter data for business groups (groups that have mixed business/domestic data)
+  const businessGroupData = data.filter(record => 
+    GROUPS_WITH_BUSINESS_DATA.includes(record.group) && record.householdName.trim() !== ''
+  );
   
   // Domestic-only calculations
   const uniqueDomesticHouseholds = new Set(domesticOnlyData.map(record => record.householdName));
@@ -189,38 +223,50 @@ export function calculateHouseholdCategories(data: CleanedDataRecord[]): Househo
   const domesticHouseholdCount = uniqueDomesticHouseholds.size || 1;
   const domesticWeekCount = uniqueDomesticWeeks.size || 1;
   
-  // All households calculations (domestic + business combined)
-  const uniqueAllHouseholds = new Set(allHouseholdsData.map(record => record.householdName));
-  const uniqueAllWeeks = new Set(allHouseholdsData.map(record => record.weekNumber));
-  const totalAllWetWaste = allHouseholdsData.reduce((sum, record) => sum + record.wetWaste, 0);
-  const totalAllDryWaste = allHouseholdsData.reduce((sum, record) => sum + record.dryWaste, 0);
+  // Business group calculations
+  const uniqueBusinessHouseholds = new Set(businessGroupData.map(record => record.householdName));
+  const uniqueBusinessWeeks = new Set(businessGroupData.map(record => record.weekNumber));
+  const totalBusinessWetWaste = businessGroupData.reduce((sum, record) => sum + record.wetWaste, 0);
+  const totalBusinessDryWaste = businessGroupData.reduce((sum, record) => sum + record.dryWaste, 0);
   
-  const allHouseholdCount = uniqueAllHouseholds.size || 1;
-  const allWeekCount = uniqueAllWeeks.size || 1;
+  const businessHouseholdCount = uniqueBusinessHouseholds.size || 1;
+  const businessWeekCount = uniqueBusinessWeeks.size || 1;
   
   return {
-    // Domestic-only households (matches "Avg weekly Generation for households with only domestic waste")
+    // Domestic-only groups (excludes Tech Taka, Kibuye WM, Manyatta YRC, United Solutions WM)
     domestic: {
       avgWeeklyWetWaste: totalDomesticWetWaste / domesticHouseholdCount / domesticWeekCount,
       avgWeeklyDryWaste: totalDomesticDryWaste / domesticHouseholdCount / domesticWeekCount,
       totalHouseholds: uniqueDomesticHouseholds.size,
       totalWeeks: uniqueDomesticWeeks.size
     },
-    // All households combined (matches "Avg weekly generation for households with domestic waste and business waste")
+    // Business groups (Tech Taka, Kibuye WM, Manyatta YRC, United Solutions WM only)
     business: {
-      avgWeeklyWetWaste: totalAllWetWaste / allHouseholdCount / allWeekCount,
-      avgWeeklyDryWaste: totalAllDryWaste / allHouseholdCount / allWeekCount,
-      totalHouseholds: uniqueAllHouseholds.size,
-      totalWeeks: uniqueAllWeeks.size
+      avgWeeklyWetWaste: totalBusinessWetWaste / businessHouseholdCount / businessWeekCount,
+      avgWeeklyDryWaste: totalBusinessDryWaste / businessHouseholdCount / businessWeekCount,
+      totalHouseholds: uniqueBusinessHouseholds.size,
+      totalWeeks: uniqueBusinessWeeks.size
     }
   };
 }
 
 /**
- * Get unique values for filter dropdowns
+ * Convert display group name back to internal group key
+ */
+export function getGroupKeyFromDisplayName(displayName: string): string {
+  // Find the key where the value matches the display name
+  const entry = Object.entries(GROUP_NAME_MAPPING).find(([, value]) => value === displayName);
+  return entry ? entry[0] : displayName;
+}
+
+/**
+ * Get unique values for filter dropdowns with full display names
  */
 export function getUniqueValues(data: CleanedDataRecord[]) {
-  const groups = [...new Set(data.map(record => record.group))].sort();
+  // Get unique group names from data and map to full display names
+  const uniqueGroupKeys = [...new Set(data.map(record => record.group))].sort();
+  const groups = uniqueGroupKeys.map(groupKey => GROUP_NAME_MAPPING[groupKey] || groupKey);
+  
   const households = [...new Set(data.map(record => record.householdName).filter(name => name.trim() !== ''))].sort();
   
   return { groups, households };
@@ -239,9 +285,12 @@ export function filterDryWasteData(data: CleanedDataRecord[], filters: DryWasteF
       return false;
     }
     
-    // Groups filter - if groups are selected, record must be in one of them
-    if (filters.selectedGroups && filters.selectedGroups.length > 0 && !filters.selectedGroups.includes(record.group)) {
-      return false;
+    // Groups filter - convert display names back to internal keys for comparison
+    if (filters.selectedGroups && filters.selectedGroups.length > 0) {
+      const selectedGroupKeys = filters.selectedGroups.map(displayName => getGroupKeyFromDisplayName(displayName));
+      if (!selectedGroupKeys.includes(record.group)) {
+        return false;
+      }
     }
     
     // Households filter - if households are selected, record must be in one of them

@@ -28,7 +28,7 @@ export default function Header() {
         <div className="flex justify-between items-center py-4">
           <Link href="/" className="flex items-center space-x-3">
             <Image 
-              src="/m-taka-logo.png" 
+              src="/M-taka-official-logo.webp" 
               alt="M-Taka Logo" 
               width={40} 
               height={40}

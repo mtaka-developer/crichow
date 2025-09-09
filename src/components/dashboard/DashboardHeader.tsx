@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 // --- Types ---
 interface NavigationItem {
@@ -168,13 +169,22 @@ export default function DashboardHeader() {
     <header className="w-full fixed top-2 left-1/2 transform -translate-x-1/2 z-50 bg-white/95 backdrop-blur-sm shadow-sm border border-gray-200 rounded-2xl">
       <div className="flex sm:h-17 h-14 justify-between items-center sm:px-6 px-2 min-w-full">
         {/* Logo/Brand Area */}
-        <div className="flex flex-col items-center">
-          <div className="text-2xl font-anton">
-            <span className="text-mtaka-green">CRI</span>
-            <span className="text-practical-orange">CHOW</span>
-          </div>
-
-          <span className="sm:inline hidden text-xs text-gray-500">
+        <div className="flex items-center space-x-3">
+          <Image 
+            src="/M-taka-official-logo.webp" 
+            alt="M-Taka Logo" 
+            width={32} 
+            height={32}
+            className="drop-shadow-lg"
+          />
+          <Image 
+            src="/pa-logo.png" 
+            alt="Practical Action Logo" 
+            width={32} 
+            height={32}
+            className="drop-shadow-lg"
+          />
+          <span className="sm:inline hidden text-xs text-gray-500 ml-2">
             Dashboard
           </span>
         </div>

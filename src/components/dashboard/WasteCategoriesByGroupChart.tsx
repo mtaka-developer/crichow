@@ -85,17 +85,19 @@ export default function WasteCategoriesByGroupChart({ data }: WasteCategoriesByG
   };
 
   return (
-    <div>
+    <div className="h-96">
       <h4 className="text-lg font-bold text-gray-800 mb-4 font-poppins">
         Waste Categories by Group (kg)
       </h4>
-      
+
       {chartData.length === 0 ? (
         <div className="flex items-center justify-center h-64 text-gray-500">
-          <p className="font-poppins">No data available for the selected filters</p>
+          <p className="font-poppins">
+            No data available for the selected filters
+          </p>
         </div>
       ) : (
-        <div className="h-80">
+        <div className="h-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={chartData}
@@ -103,26 +105,27 @@ export default function WasteCategoriesByGroupChart({ data }: WasteCategoriesByG
                 top: 20,
                 right: 30,
                 left: 20,
-                bottom: 80
+                bottom: 80,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis 
+              <XAxis
                 dataKey="groupName"
                 fontSize={10}
                 stroke="#374151"
-                tick={{ fontFamily: 'Poppins, sans-serif' }}
+                tick={{ fontFamily: "Poppins, sans-serif" }}
                 angle={-45}
                 textAnchor="end"
                 height={80}
               />
-              <YAxis 
+              <YAxis
                 fontSize={12}
                 stroke="#374151"
-                tick={{ fontFamily: 'Poppins, sans-serif' }}
+                tick={{ fontFamily: "Poppins, sans-serif" }}
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
+
               
               <Bar
                 dataKey="HDPE"
