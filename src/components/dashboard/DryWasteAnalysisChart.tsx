@@ -86,11 +86,11 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: entry.color }}
                 />
-                <span className="text-sm font-poppins text-gray-700">
+                <span className="text-sm font-poppins text-gray-800">
                   {entry.dataKey}:
                 </span>
               </div>
-              <span className="text-sm font-semibold font-poppins">
+              <span className="text-sm font-semibold font-poppins text-gray-900">
                 {entry.value.toFixed(1)} kg
               </span>
             </div>
@@ -108,15 +108,15 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
           <p className="font-poppins">No data available for the selected filters</p>
         </div>
       ) : (
-        <div className="h-80">
+        <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}
               margin={{
-                top: 10,
-                right: 20,
-                left: 40,
-                bottom: 80
+                top: 5,
+                right: 15,
+                left: 20,
+                bottom: 60
               }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />

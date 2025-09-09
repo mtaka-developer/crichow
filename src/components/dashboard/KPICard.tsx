@@ -10,13 +10,20 @@ export default function KPICard({ title, value, unit, icon, colorClass = "text-b
   const formatValue = (val: number | string): string => {
     if (typeof val === 'string') return val;
     
-    // Format large numbers with commas
+    // Check if it's a whole number (no decimal part)
+    const isWholeNumber = Number.isInteger(val);
+    
+    // Format large numbers with commas, no decimal places for thousands+
     if (val >= 1000) {
-      return val.toLocaleString('en-US', { maximumFractionDigits: 1 });
+      return val.toLocaleString('en-US', { maximumFractionDigits: 0 });
     }
     
-    // Show up to 1 decimal place for smaller numbers
-    return val.toLocaleString('en-US', { maximumFractionDigits: 1 });
+    // For smaller numbers, show no decimals if it's a whole number, otherwise 2 decimals
+    if (isWholeNumber) {
+      return val.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    } else {
+      return val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
   };
 
   const getIconColorClass = () => {

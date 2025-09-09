@@ -71,18 +71,6 @@ export default function FilterComponents({ filters, onFiltersChange, groups, hou
     });
   };
 
-  // Custom formatting for multi-select display
-  const formatGroupDisplay = (value: readonly OptionType[]) => {
-    if (value.length === 0) return 'Select groups...';
-    if (value.length === 1) return value[0].label;
-    return `${value[0].label} + ${value.length - 1} more`;
-  };
-
-  const formatHouseholdDisplay = (value: readonly OptionType[]) => {
-    if (value.length === 0) return 'Select households...';
-    if (value.length === 1) return value[0].label;
-    return `${value[0].label} + ${value.length - 1} more`;
-  };
 
   // Format date range display
   const formatDateRangeDisplay = () => {

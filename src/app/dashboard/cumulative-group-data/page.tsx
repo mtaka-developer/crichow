@@ -11,7 +11,6 @@ import { cleanData, filterData, calculateGroupAnalysisData, getUniqueValues } fr
 
 export default function CumulativeGroupDataPage() {
   const [cleanedData, setCleanedData] = useState<CleanedDataRecord[]>([]);
-  const [filteredData, setFilteredData] = useState<CleanedDataRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -41,7 +40,6 @@ export default function CumulativeGroupDataPage() {
         // Clean the data
         const cleaned = cleanData(data);
         setCleanedData(cleaned);
-        setFilteredData(cleaned); // Initially show all data
         
         // Get unique values for filters
         const unique = getUniqueValues(cleaned);
@@ -65,7 +63,6 @@ export default function CumulativeGroupDataPage() {
   useEffect(() => {
     if (cleanedData.length > 0) {
       const filtered = filterData(cleanedData, filters);
-      setFilteredData(filtered);
       
       // Recalculate group analysis data based on filtered data
       setGroupAnalysisData(calculateGroupAnalysisData(filtered));
@@ -114,37 +111,21 @@ export default function CumulativeGroupDataPage() {
         households={uniqueValues.households}
       />
 
-      {/* Analysis Section Header */}
-      <div className="mb-6">
-        <h3 className="text-xl font-bold text-gray-900 font-sans">Group Analysis Overview</h3>
-        <p className="text-sm text-gray-600 font-poppins mt-1">
-          Comprehensive waste collection analysis across all groups
-        </p>
-      </div>
-
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
         {/* Dry and Wet Waste by Group Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
           <DryWetWasteByGroupChart data={groupAnalysisData} />
         </div>
 
         {/* Group by Total Weight Donut Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
           <GroupTotalWeightDonutChart data={groupAnalysisData} />
         </div>
       </div>
 
-      {/* Detailed Analysis Section Header */}
-      <div className="mb-6">
-        <h3 className="text-xl font-bold text-gray-900 font-sans">Material Breakdown Analysis</h3>
-        <p className="text-sm text-gray-600 font-poppins mt-1">
-          Detailed view of recyclable materials by group
-        </p>
-      </div>
-
       {/* Waste Categories by Group Chart - Full Width */}
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
         <WasteCategoriesByGroupChart data={groupAnalysisData} />
       </div>
     </DashboardPageWrapper>

@@ -9,9 +9,7 @@ import { RawDataRecord, CleanedDataRecord, FilterState, KPIData, HouseholdCatego
 import { cleanData, filterData, calculateKPIs, calculateHouseholdCategories, getUniqueValues } from '@/lib/dataUtils';
 
 export default function SummaryPage() {
-  const [rawData, setRawData] = useState<RawDataRecord[]>([]);
   const [cleanedData, setCleanedData] = useState<CleanedDataRecord[]>([]);
-  const [filteredData, setFilteredData] = useState<CleanedDataRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -60,12 +58,10 @@ export default function SummaryPage() {
         }
         
         const data: RawDataRecord[] = await response.json();
-        setRawData(data);
         
         // Clean the data
         const cleaned = cleanData(data);
         setCleanedData(cleaned);
-        setFilteredData(cleaned); // Initially show all data
         
         // Get unique values for filters
         const unique = getUniqueValues(cleaned);
@@ -90,7 +86,6 @@ export default function SummaryPage() {
   useEffect(() => {
     if (cleanedData.length > 0) {
       const filtered = filterData(cleanedData, filters);
-      setFilteredData(filtered);
       
       // Recalculate KPIs and categories based on filtered data
       setKpiData(calculateKPIs(filtered));

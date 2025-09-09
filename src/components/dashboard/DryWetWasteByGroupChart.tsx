@@ -10,13 +10,15 @@ interface DryWetWasteByGroupChartProps {
 
 export default function DryWetWasteByGroupChart({ data }: DryWetWasteByGroupChartProps) {
   const chartData = useMemo(() => {
-    // Data is already sorted by total weight (highest first) from the utility function
-    return data.map(group => ({
+    // Use real data now that we know the chart works
+    const result = data.map(group => ({
       groupName: group.groupName,
-      'Wet Waste': group.totalWetWaste,
-      'Dry Waste': group.totalDryWaste,
+      wetWaste: group.totalWetWaste,
+      dryWaste: group.totalDryWaste,
       totalWeight: group.totalWeight
     }));
+    console.log('DryWetWasteByGroupChart real data:', result.slice(0, 3));
+    return result;
   }, [data]);
 
   const CustomTooltip = ({ active, payload, label }: { 
@@ -26,8 +28,8 @@ export default function DryWetWasteByGroupChart({ data }: DryWetWasteByGroupChar
   }) => {
     if (!active || !payload || payload.length === 0) return null;
     
-    const wetWaste = payload.find(p => p.dataKey === 'Wet Waste')?.value || 0;
-    const dryWaste = payload.find(p => p.dataKey === 'Dry Waste')?.value || 0;
+    const wetWaste = payload.find(p => p.dataKey === 'wetWaste')?.value || 0;
+    const dryWaste = payload.find(p => p.dataKey === 'dryWaste')?.value || 0;
     const total = wetWaste + dryWaste;
     
     return (
@@ -43,18 +45,18 @@ export default function DryWetWasteByGroupChart({ data }: DryWetWasteByGroupChar
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: entry.color }}
                 />
-                <span className="text-sm font-poppins text-gray-700">
+                <span className="text-sm font-poppins text-gray-800">
                   {entry.dataKey}:
                 </span>
               </div>
-              <span className="text-sm font-semibold font-poppins">
+              <span className="text-sm font-semibold font-poppins text-gray-900">
                 {entry.value.toFixed(1)} kg
               </span>
             </div>
           ))}
           <div className="pt-1 mt-1 border-t border-gray-200">
             <div className="flex items-center justify-between space-x-4">
-              <span className="text-sm font-poppins text-gray-700">
+              <span className="text-sm font-poppins text-gray-800">
                 Total:
               </span>
               <span className="text-sm font-bold font-poppins text-gray-900">
@@ -78,67 +80,51 @@ export default function DryWetWasteByGroupChart({ data }: DryWetWasteByGroupChar
           <p className="font-poppins">No data available for the selected filters</p>
         </div>
       ) : (
-        <div className="h-96">
+        <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={chartData}
-              layout="horizontal"
               margin={{
-                top: 10,
-                right: 20,
-                left: 100,
-                bottom: 10
+                top: 20,
+                right: 30,
+                left: 20,
+                bottom: 80
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis 
-                type="number"
-                fontSize={11}
-                stroke="#6b7280"
-                domain={[0, 'dataMax']}
+                dataKey="groupName"
+                fontSize={10}
+                stroke="#374151"
                 tick={{ fontFamily: 'Poppins, sans-serif' }}
+                angle={-45}
+                textAnchor="end"
+                height={80}
               />
               <YAxis 
-                type="category"
-                dataKey="groupName"
-                fontSize={11}
-                stroke="#6b7280"
-                width={90}
+                fontSize={12}
+                stroke="#374151"
                 tick={{ fontFamily: 'Poppins, sans-serif' }}
-                interval={0}
               />
               <Tooltip content={<CustomTooltip />} />
-              <Legend 
-                wrapperStyle={{ 
-                  paddingTop: '15px', 
-                  fontSize: '11px',
-                  fontFamily: 'Poppins, sans-serif'
-                }}
-              />
+              <Legend />
               
               <Bar
-                dataKey="Wet Waste"
-                stackId="waste"
-                fill="#2563eb" // Blue for wet waste
-                radius={[0, 0, 0, 0]}
+                dataKey="wetWaste"
+                stackId="a"
+                fill="#3B82F6"
+                name="Wet Waste"
               />
               <Bar
-                dataKey="Dry Waste"
-                stackId="waste"
-                fill="#dc2626" // Red for dry waste
-                radius={[0, 4, 4, 0]}
+                dataKey="dryWaste"
+                stackId="a"
+                fill="#EF4444"
+                name="Dry Waste"
               />
             </BarChart>
           </ResponsiveContainer>
         </div>
       )}
-      
-      <div className="mt-4 text-sm text-gray-600 font-poppins">
-        <p>
-          Groups are sorted by total waste collected (highest to lowest). 
-          Each bar shows the breakdown of wet and dry waste collection.
-        </p>
-      </div>
     </div>
   );
 }

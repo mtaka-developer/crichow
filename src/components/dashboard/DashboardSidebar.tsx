@@ -38,9 +38,7 @@ const ExtrapolationIcon = ({ className }: { className?: string }) => (
 const navigation: NavigationItem[] = [
   { name: "Summary", href: "/dashboard", icon: SummaryIcon },
   { name: "Dry Waste Analysis", href: "/dashboard/dry-waste-analysis", icon: WasteAnalysisIcon },
-  { name: "Copy of Dry Waste Analysis", href: "/dashboard/copy-of-dry-waste-analysis", icon: WasteAnalysisIcon },
   { name: "Cumulative Group Data", href: "/dashboard/cumulative-group-data", icon: GroupDataIcon },
-  { name: "Copy of Cumulative Group Data", href: "/dashboard/copy-cumulative-group-data", icon: GroupDataIcon },
   { name: "Extrapolation", href: "/dashboard/extrapolation", icon: ExtrapolationIcon },
 ];
 

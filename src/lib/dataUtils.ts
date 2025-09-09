@@ -165,41 +165,47 @@ export function calculateKPIs(data: CleanedDataRecord[]): KPIData {
 
 /**
  * Calculate household category data (Business vs Domestic)
+ * Matches Looker Studio logic: average weekly waste per household per week
  */
 export function calculateHouseholdCategories(data: CleanedDataRecord[]): HouseholdCategoryData {
-  const businessData = data.filter(record => record.isBusinessHousehold);
-  const domesticData = data.filter(record => !record.isBusinessHousehold);
+  // Filter domestic-only households (excluding business households)
+  const domesticOnlyData = data.filter(record => !record.isBusinessHousehold && record.householdName.trim() !== '');
   
-  // Business households calculations
-  const uniqueBusinessHouseholds = new Set(businessData.map(record => record.householdName).filter(name => name.trim() !== ''));
-  const uniqueBusinessWeeks = new Set(businessData.map(record => record.weekNumber));
-  const totalBusinessWetWaste = businessData.reduce((sum, record) => sum + record.wetWaste, 0);
-  const totalBusinessDryWaste = businessData.reduce((sum, record) => sum + record.dryWaste, 0);
+  // All households data (domestic + business combined)
+  const allHouseholdsData = data.filter(record => record.householdName.trim() !== '');
   
-  const businessHouseholdCount = uniqueBusinessHouseholds.size || 1; // Avoid division by zero
-  const businessWeekCount = uniqueBusinessWeeks.size || 1;
-  
-  // Domestic households calculations  
-  const uniqueDomesticHouseholds = new Set(domesticData.map(record => record.householdName).filter(name => name.trim() !== ''));
-  const uniqueDomesticWeeks = new Set(domesticData.map(record => record.weekNumber));
-  const totalDomesticWetWaste = domesticData.reduce((sum, record) => sum + record.wetWaste, 0);
-  const totalDomesticDryWaste = domesticData.reduce((sum, record) => sum + record.dryWaste, 0);
+  // Domestic-only calculations
+  const uniqueDomesticHouseholds = new Set(domesticOnlyData.map(record => record.householdName));
+  const uniqueDomesticWeeks = new Set(domesticOnlyData.map(record => record.weekNumber));
+  const totalDomesticWetWaste = domesticOnlyData.reduce((sum, record) => sum + record.wetWaste, 0);
+  const totalDomesticDryWaste = domesticOnlyData.reduce((sum, record) => sum + record.dryWaste, 0);
   
   const domesticHouseholdCount = uniqueDomesticHouseholds.size || 1;
   const domesticWeekCount = uniqueDomesticWeeks.size || 1;
   
+  // All households calculations (domestic + business combined)
+  const uniqueAllHouseholds = new Set(allHouseholdsData.map(record => record.householdName));
+  const uniqueAllWeeks = new Set(allHouseholdsData.map(record => record.weekNumber));
+  const totalAllWetWaste = allHouseholdsData.reduce((sum, record) => sum + record.wetWaste, 0);
+  const totalAllDryWaste = allHouseholdsData.reduce((sum, record) => sum + record.dryWaste, 0);
+  
+  const allHouseholdCount = uniqueAllHouseholds.size || 1;
+  const allWeekCount = uniqueAllWeeks.size || 1;
+  
   return {
-    business: {
-      avgWeeklyWetWaste: totalBusinessWetWaste / businessHouseholdCount / businessWeekCount,
-      avgWeeklyDryWaste: totalBusinessDryWaste / businessHouseholdCount / businessWeekCount,
-      totalHouseholds: uniqueBusinessHouseholds.size,
-      totalWeeks: uniqueBusinessWeeks.size
-    },
+    // Domestic-only households (matches "Avg weekly Generation for households with only domestic waste")
     domestic: {
       avgWeeklyWetWaste: totalDomesticWetWaste / domesticHouseholdCount / domesticWeekCount,
       avgWeeklyDryWaste: totalDomesticDryWaste / domesticHouseholdCount / domesticWeekCount,
       totalHouseholds: uniqueDomesticHouseholds.size,
       totalWeeks: uniqueDomesticWeeks.size
+    },
+    // All households combined (matches "Avg weekly generation for households with domestic waste and business waste")
+    business: {
+      avgWeeklyWetWaste: totalAllWetWaste / allHouseholdCount / allWeekCount,
+      avgWeeklyDryWaste: totalAllDryWaste / allHouseholdCount / allWeekCount,
+      totalHouseholds: uniqueAllHouseholds.size,
+      totalWeeks: uniqueAllWeeks.size
     }
   };
 }
