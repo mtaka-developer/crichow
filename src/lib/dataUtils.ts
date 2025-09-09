@@ -13,7 +13,8 @@ export const BUSINESS_HOUSEHOLDS = [
 ];
 
 /**
- * Parse date string in MM/DD/YYYY format to Date object
+ * Parse date string in DD/MM/YYYY format to Date object
+ * CRITICAL FIX: JSON data uses DD/MM/YYYY format, not MM/DD/YYYY
  */
 function parseDate(dateString: string): Date | null {
   if (!dateString || dateString.trim() === '') return null;
@@ -21,13 +22,18 @@ function parseDate(dateString: string): Date | null {
   const parts = dateString.split('/');
   if (parts.length !== 3) return null;
   
-  const month = parseInt(parts[0], 10) - 1; // JavaScript months are 0-indexed
-  const day = parseInt(parts[1], 10);
+  const day = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10) - 1; // JavaScript months are 0-indexed
   const year = parseInt(parts[2], 10);
+  
+  // Validate input ranges before creating date
+  if (day < 1 || day > 31 || month < 0 || month > 11 || year < 1900 || year > 2100) {
+    return null;
+  }
   
   const date = new Date(year, month, day);
   
-  // Validate the date
+  // Validate the date (handles edge cases like Feb 30, etc.)
   if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) {
     return null;
   }
