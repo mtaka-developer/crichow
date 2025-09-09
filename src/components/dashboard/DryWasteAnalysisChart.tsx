@@ -101,57 +101,62 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
   };
 
   return (
-    <div>
-      
+    <div className="h-96">
       {chartData.length === 0 ? (
         <div className="flex items-center justify-center h-64 text-gray-500">
-          <p className="font-poppins">No data available for the selected filters</p>
+          <p className="font-poppins">
+            No data available for the selected filters
+          </p>
         </div>
       ) : (
-        <div className="h-72">
+        <div className="h-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}
               margin={{
-                top: 5,
-                right: 15,
+                top: 20,
+                right: 20,
                 left: 20,
-                bottom: 60
+                bottom: 5,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-              <XAxis 
+              <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
+              <XAxis
                 dataKey="month"
                 tickFormatter={formatXAxisLabel}
-                angle={-45}
-                textAnchor="end"
+                angle={0}
+                textAnchor="middle"
                 height={80}
                 fontSize={11}
                 stroke="#6b7280"
                 interval="preserveStartEnd"
-                tick={{ fontFamily: 'Poppins, sans-serif' }}
+                tick={{ fontFamily: "Poppins, sans-serif" }}
               />
-              <YAxis 
+              <YAxis
                 fontSize={11}
                 stroke="#6b7280"
-                tick={{ fontFamily: 'Poppins, sans-serif' }}
-                label={{ 
-                  value: 'Quantity (kg)', 
-                  angle: -90, 
-                  position: 'insideLeft',
-                  style: { textAnchor: 'middle', fontFamily: 'Poppins, sans-serif', fontSize: '12px' }
+                tick={{ fontFamily: "Poppins, sans-serif" }}
+                label={{
+                  value: "Quantity (kg)",
+                  angle: -90,
+                  position: "insideLeft",
+                  style: {
+                    textAnchor: "middle",
+                    fontFamily: "Poppins, sans-serif",
+                    fontSize: "12px",
+                  },
                 }}
               />
               <Tooltip content={<CustomTooltip />} />
-              <Legend 
-                wrapperStyle={{ 
-                  paddingTop: '15px', 
-                  fontSize: '11px',
-                  fontFamily: 'Poppins, sans-serif'
+              <Legend
+                wrapperStyle={{
+                  paddingTop: "0px",
+                  fontSize: "11px",
+                  fontFamily: "Poppins, sans-serif",
                 }}
               />
               
-              {selectedMaterialTypes.includes('HDPE') && (
+              {selectedMaterialTypes.includes("HDPE") && (
                 <Line
                   type="monotone"
                   dataKey="HDPE"
@@ -162,7 +167,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                 />
               )}
               
-              {selectedMaterialTypes.includes('PET') && (
+              {selectedMaterialTypes.includes("PET") && (
                 <Line
                   type="monotone"
                   dataKey="PET"
@@ -173,7 +178,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                 />
               )}
               
-              {selectedMaterialTypes.includes('PP') && (
+              {selectedMaterialTypes.includes("PP") && (
                 <Line
                   type="monotone"
                   dataKey="PP"
@@ -184,7 +189,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                 />
               )}
               
-              {selectedMaterialTypes.includes('Glass') && (
+              {selectedMaterialTypes.includes("Glass") && (
                 <Line
                   type="monotone"
                   dataKey="Glass"
@@ -195,7 +200,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                 />
               )}
               
-              {selectedMaterialTypes.includes('Paper') && (
+              {selectedMaterialTypes.includes("Paper") && (
                 <Line
                   type="monotone"
                   dataKey="Paper"
@@ -206,7 +211,7 @@ export default function DryWasteAnalysisChart({ data, selectedMaterialTypes }: D
                 />
               )}
               
-              {selectedMaterialTypes.includes('Metal') && (
+              {selectedMaterialTypes.includes("Metal") && (
                 <Line
                   type="monotone"
                   dataKey="Metal"

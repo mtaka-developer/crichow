@@ -5,11 +5,13 @@ import DashboardPageWrapper from "@/components/dashboard/DashboardPageWrapper";
 import FilterComponents from "@/components/dashboard/FilterComponents";
 import KPIGrid from "@/components/dashboard/KPIGrid";
 import HouseholdCategorization from "@/components/dashboard/HouseholdCategorization";
+import TotalWeightChart from "@/components/dashboard/TotalWeightChart";
 import { RawDataRecord, CleanedDataRecord, FilterState, KPIData, HouseholdCategoryData } from '@/types/data';
 import { cleanData, filterData, calculateKPIs, calculateHouseholdCategories, getUniqueValues } from '@/lib/dataUtils';
 
 export default function SummaryPage() {
   const [cleanedData, setCleanedData] = useState<CleanedDataRecord[]>([]);
+  const [filteredData, setFilteredData] = useState<CleanedDataRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -62,6 +64,7 @@ export default function SummaryPage() {
         // Clean the data
         const cleaned = cleanData(data);
         setCleanedData(cleaned);
+        setFilteredData(cleaned); // Initially show all data
         
         // Get unique values for filters
         const unique = getUniqueValues(cleaned);
@@ -86,6 +89,7 @@ export default function SummaryPage() {
   useEffect(() => {
     if (cleanedData.length > 0) {
       const filtered = filterData(cleanedData, filters);
+      setFilteredData(filtered);
       
       // Recalculate KPIs and categories based on filtered data
       setKpiData(calculateKPIs(filtered));
@@ -144,6 +148,18 @@ export default function SummaryPage() {
       {/* Household Categorization */}
       <HouseholdCategorization data={householdCategoryData} />
 
+      {/* Total Weight Chart */}
+      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+        <div className="mb-3">
+          <h4 className="text-lg font-semibold text-gray-800 font-poppins">
+            Total Weight (kg) over Time
+          </h4>
+          <p className="text-sm text-gray-600 font-poppins mt-1">
+            Combined weight of wet waste and dry waste materials collected over time.
+          </p>
+        </div>
+        <TotalWeightChart data={filteredData} />
+      </div>
     </DashboardPageWrapper>
   );
 }

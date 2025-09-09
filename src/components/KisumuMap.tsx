@@ -4,19 +4,10 @@ import { MapContainer, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 import { useEffect, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { GROUP_NAME_MAPPING } from '@/lib/dataUtils';
 
 // Kisumu coordinates (approximate)
 const KISUMU_CENTER = { lat: -0.0917, lng: 34.7680 };
-
-// Ward locations for the 6 specific wards mentioned
-const WARD_LOCATIONS = [
-  { name: "Kaloleni Shaurimoyo", lat: -0.0850, lng: 34.7650, households: 0 },
-  { name: "Nyalenda A", lat: -0.0980, lng: 34.7420, households: 0 },
-  { name: "Nyalenda B", lat: -0.1020, lng: 34.7450, households: 0 },
-  { name: "Railways", lat: -0.0900, lng: 34.7680, households: 0 },
-  { name: "Manyatta A", lat: -0.0850, lng: 34.7700, households: 0 },
-  { name: "Central", lat: -0.0917, lng: 34.7680, households: 0 }
-];
 
 interface DataLocation {
   lat: number;
@@ -26,16 +17,37 @@ interface DataLocation {
 }
 
 function parseLocationString(locationString: string): { lat: number; lng: number } | null {
-  if (!locationString) return null;
+  if (!locationString || locationString.trim() === '') return null;
   
   // Parse format like "-0.0833° 34.7667°"
-  const match = locationString.match(/(-?\d+\.\d+)°\s*(-?\d+\.\d+)°/);
-  if (!match) return null;
+  const decimalMatch = locationString.match(/(-?\d+\.\d+)°?\s*(-?\d+\.\d+)°?/);
+  if (decimalMatch) {
+    return {
+      lat: parseFloat(decimalMatch[1]),
+      lng: parseFloat(decimalMatch[2])
+    };
+  }
   
-  return {
-    lat: parseFloat(match[1]),
-    lng: parseFloat(match[2])
-  };
+  // Parse degrees/minutes/seconds format like "-0°5'17\"N   34°45'39\"E"
+  const dmsMatch = locationString.match(/(-?\d+)°(\d+)'(\d+)"?([NS])?\s*(-?\d+)°(\d+)'(\d+)"?([EW])?/);
+  if (dmsMatch) {
+    let lat = parseInt(dmsMatch[1]) + parseInt(dmsMatch[2])/60 + parseInt(dmsMatch[3])/3600;
+    let lng = parseInt(dmsMatch[5]) + parseInt(dmsMatch[6])/60 + parseInt(dmsMatch[7])/3600;
+    
+    // Handle N/S and E/W indicators
+    if (dmsMatch[4] === 'S') lat = -Math.abs(lat);
+    if (dmsMatch[8] === 'W') lng = -Math.abs(lng);
+    
+    // If no N/S/E/W indicators but coordinates suggest they should be negative (for Kisumu location)
+    if (!dmsMatch[4] && !dmsMatch[8]) {
+      lat = -Math.abs(lat); // Kisumu is south of equator
+      // lng should be positive for Kisumu (east of prime meridian)
+    }
+    
+    return { lat, lng };
+  }
+  
+  return null;
 }
 
 export default function KisumuMap() {
@@ -52,31 +64,33 @@ export default function KisumuMap() {
         
         const rawData = await response.json();
         
-        // Process each record and extract unique locations
-        const locationMap = new Map<string, DataLocation>();
+        // Process each record and extract unique group locations
+        const groupLocationMap = new Map<string, DataLocation>();
         
         rawData.forEach((record: {
           Location?: string;
           Group?: string;
           "HOUSEHOLD NAME"?: string;
         }) => {
-          if (record.Location && record.Group && record["HOUSEHOLD NAME"]) {
+          if (record.Location && record.Group && record.Location.trim() !== '') {
             const coords = parseLocationString(record.Location);
-            if (coords) {
-              const key = `${coords.lat}_${coords.lng}_${record.Group}`;
-              if (!locationMap.has(key)) {
-                locationMap.set(key, {
+            if (coords && coords.lat && coords.lng) {
+              // Use group name as key to get one location per group
+              const groupKey = record.Group;
+              if (!groupLocationMap.has(groupKey)) {
+                const fullGroupName = GROUP_NAME_MAPPING[record.Group] || record.Group;
+                groupLocationMap.set(groupKey, {
                   lat: coords.lat,
                   lng: coords.lng,
-                  group: record.Group,
-                  householdName: record["HOUSEHOLD NAME"]
+                  group: fullGroupName,
+                  householdName: record["HOUSEHOLD NAME"] || 'Multiple households'
                 });
               }
             }
           }
         });
         
-        setDataLocations(Array.from(locationMap.values()));
+        setDataLocations(Array.from(groupLocationMap.values()));
       } catch (error) {
         console.error('Error loading map data:', error);
       } finally {
@@ -143,44 +157,22 @@ export default function KisumuMap() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
-        {/* Markers for ward locations */}
-        {leafletIcon && WARD_LOCATIONS.map((ward, index) => (
-          <Marker
-            key={`ward-${index}`}
-            position={[ward.lat, ward.lng]}
-            icon={leafletIcon}
-          >
-            <Popup>
-              <div className="p-2">
-                <h3 className="font-bold text-lg text-green-600 mb-1">
-                  {ward.name} Ward
-                </h3>
-                <div className="text-sm text-gray-600">
-                  <p className="text-xs mt-1">
-                    CRICHOW project coverage area
-                  </p>
-                </div>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-        
-        {/* Markers for actual data collection points */}
+        {/* Markers for group locations */}
         {leafletIcon && !loading && dataLocations.map((location, index) => (
           <Marker
-            key={`data-${index}`}
+            key={`group-${index}`}
             position={[location.lat, location.lng]}
             icon={leafletIcon}
           >
             <Popup>
               <div className="p-2">
-                <h3 className="font-bold text-lg text-blue-600 mb-1">
+                <h3 className="font-bold text-lg text-mtaka-green mb-2">
                   {location.group}
                 </h3>
                 <div className="text-sm text-gray-600">
-                  <p><strong>Household:</strong> {location.householdName}</p>
-                  <p className="text-xs mt-1">
-                    Active data collection point
+                  <p className="mb-1">📍 <strong>Location:</strong> {location.lat.toFixed(4)}, {location.lng.toFixed(4)}</p>
+                  <p className="text-xs mt-1 text-gray-500">
+                    Community waste management group
                   </p>
                 </div>
               </div>

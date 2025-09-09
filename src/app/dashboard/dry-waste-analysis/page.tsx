@@ -5,7 +5,6 @@ import DashboardPageWrapper from "@/components/dashboard/DashboardPageWrapper";
 import DryWasteFilterComponents from "@/components/dashboard/DryWasteFilterComponents";
 import RecyclableMaterialKPIGrid from "@/components/dashboard/RecyclableMaterialKPIGrid";
 import DryWasteAnalysisChart from "@/components/dashboard/DryWasteAnalysisChart";
-import TotalWeightChart from "@/components/dashboard/TotalWeightChart";
 import { RawDataRecord, CleanedDataRecord, DryWasteFilterState, RecyclableMaterialKPIData } from '@/types/data';
 import { cleanData, filterDryWasteData, calculateRecyclableMaterialKPIs, getUniqueValues } from '@/lib/dataUtils';
 
@@ -150,14 +149,6 @@ export default function CopyOfDryWasteAnalysisPage() {
           />
         </div>
 
-        {/* Total Weight Chart */}
-        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-          <div className="mb-3">
-            <h4 className="text-lg font-semibold text-gray-800 font-poppins">Total Weight (kg) over Time</h4>
-            <p className="text-sm text-gray-600 font-poppins mt-1">Combined weight trends</p>
-          </div>
-          <TotalWeightChart data={filteredData} />
-        </div>
       </div>
     </DashboardPageWrapper>
   );

@@ -126,7 +126,6 @@ export default function WasteCategoriesByGroupChart({ data }: WasteCategoriesByG
               <Tooltip content={<CustomTooltip />} />
               <Legend />
 
-              
               <Bar
                 dataKey="HDPE"
                 stackId="a"
